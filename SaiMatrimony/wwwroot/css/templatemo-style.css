@@ -430,6 +430,7 @@ http://www.templatemo.com/tm-509-hydro
   .search-main {
     font-size: large;
     cursor: pointer;
+    text-align:left;
   }
 
  .search-main-title {

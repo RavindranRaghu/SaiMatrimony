@@ -22,20 +22,35 @@ CREATE TABLE dbo.ProfileMatch(
 
 INSERT INTO dbo.ProfileMatch VALUES (
 	NEWID(),
-	'Krishna',
+	'Christy',
 	'R' ,
-	'Kumar' ,-- varchar(255) not null,
-	'M', -- varchar(1) not null,
+	'Ramanan' ,-- varchar(255) not null,
+	'F', -- varchar(1) not null,
 	'ravindranraghu@yahoo.com',
 	'+1 980 222 1122',
-	'Charlotte', -- varchar(100) null,
-	'North Carolina',  --varchar(100) null,
+	'Tampa', -- varchar(100) null,
+	'Florida',  --varchar(100) null,
     'US', 
-	'28269', 
-	'Bs ComputerScience Oxford', 
-	'Chef',
-	'Working out in GYM, Serving Community' ,
+	'11228', 
+	'Medicine', 
+	'Doctor',
+	'Love Community Singing' ,
 	'No drinking and smoking',
 	'2000' ,
 	getdate() 
 )
+
+CREATE TABLE dbo.ProfileApproved(
+ApprovalId int Identity(1,1) not null,
+UserId varchar (max) not null,
+ApprovedDate DateTime2(7) not null
+)
+
+CREATE TABLE dbo.ProfileReview(
+	ReviewId int Identity(1,1) not null,
+	UserId varchar (max) not null,
+	ImpactedUserId varchar (max) not null,
+	ImpactedType varchar(1) not null,
+	ReviewedDate DateTime2(7) not null
+)
+

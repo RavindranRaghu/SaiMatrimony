@@ -134,15 +134,23 @@
             type: 'GET',
             contentType: "application/json; charset=utf-8",
             async: false,
-            success: function (data) {
-                console.log(data);
-                var html = '';
-                data.forEach(function (item) {
-                    html += searchHtmlForProfile(item);
-                })
-                html = (data.length == 0 ) ? '<span style="padding-left:20px;">No Search Results found</span>' : html;
-                $("#search-html").html(html);
-                $(".search-detail").hide();
+            success: function (result) {
+
+                $('#actualflow-pagination').pagination({
+                    dataSource: result,
+                    pageSize: 10,
+                    showGoInput: true,
+                    showGoButton: true,
+                    callback: function (data, pagination) {
+                        var html = '';
+                        data.forEach(function (item) {
+                            html += searchHtmlForProfile(item)
+                        });                        
+                        $("#actualflow-pagination").prev().html(html);
+                        //$("#loading").hide();
+                        $(".search-detail").hide();
+                    }
+                });
             },
             error: function (error) {
                 console.log(error);
@@ -159,7 +167,7 @@
         searchHtml += '<span class="search-main-text">' + profile.firstName + " " + profile.lastName + '</span>';
         searchHtml += '</div>';
         searchHtml += '<div class="col-md-3">';
-        searchHtml += '<span class="search-main-title">Year of Birth: </span>';
+        searchHtml += '<span class="search-main-title">Year Born: </span>';
         searchHtml += '<span class="search-main-text">' + profile.yearOfBirth +'</span>';
         searchHtml += '</div>';
         searchHtml += '<div class="col-md-4">';
