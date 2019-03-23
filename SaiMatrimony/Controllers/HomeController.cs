@@ -4,12 +4,20 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using SaiMatrimony.Dto;
 using SaiMatrimony.Models;
 
 namespace SaiMatrimony.Controllers
 {
     public class HomeController : Controller
     {
+        SaiMatrimonyDb db; 
+
+        public HomeController(SaiMatrimonyDb dbContext)
+        {
+            db = dbContext;
+        }
+
         public IActionResult Index()
         {
             return View();
@@ -33,5 +41,11 @@ namespace SaiMatrimony.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+        public IActionResult GetProfiles (string edu, string pro, string gen, string location, string category)
+        {
+            return Json(new ProfileDto().GetProfilesEndPoint(db, edu, pro, gen, location, category));
+        }
+
     }
 }
