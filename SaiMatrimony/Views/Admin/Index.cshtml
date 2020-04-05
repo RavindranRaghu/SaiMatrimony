@@ -151,7 +151,7 @@
 
         // Assign Role to User
         function loadUserRole() {
-            $("#user-pagination").show();
+            $("#user-table").show();
             var firstName = $("#first-name").val();
             var lastName = $("#last-name").val();
             var email = $("#email").val();
@@ -186,7 +186,7 @@
                         });
                     }
                     else {
-                        $("#user-pagination").hide();
+                        $("#user-table").hide();
                     }
                 },
                 error: function (errorMsg) {
@@ -241,7 +241,7 @@
             var workFlowUserMap = {
                 MapId: mapid,
                 UserIdSystem: userId,
-                IsAdmin: $("adminuser").is(":checked"),
+                IsAdmin: $("#adminuser").is(":checked"),
                 UpdateByName: "0",
                 UpdateById: "0",
                 UpdateDate: new Date()
@@ -254,7 +254,7 @@
             $.ajax({
                 type: "POST",
                 url: "/Admin/ManageUserRole/",
-                data: JSON.stringify(userRoleDto),
+                data: JSON.stringify(workFlowUserMap),
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 success: function (result) {

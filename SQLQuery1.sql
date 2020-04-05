@@ -95,7 +95,7 @@ CREATE TABLE dbo.UserRoleMap(
 
 SELECT * FROM UserBasic
 
--- update UserBasic set Email = 'ravindranraghu@yahoo.com'
+-- update UserBasic set Email = 'ravindranraghu23@gmail.com' where Email = 'ravindranraghu23@gmaiil.com'
 
 
  INSERT INTO dbo.UserRoleMap
