@@ -12,7 +12,7 @@ namespace SaiMatrimony.Dto
         public List<ProfileDetails> GetProfilesEndPoint(SaiMatrimonyDb db, string edu, string pro, string gen, string location, string category)
         {
             List<ProfileDetails> allProfiles = (from p in db.ProfileDetails
-                                                join a in db.ProfileAdmin on p.UserId equals a.UserId
+                                                join a in db.ProfileApproved on p.ProfileUserId equals a.ProfileUserId
                                                  select p).ToList();
                 
             return GetProfilesLogic(allProfiles, edu, pro, gen, location, category);

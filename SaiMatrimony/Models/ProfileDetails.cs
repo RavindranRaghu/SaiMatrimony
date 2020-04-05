@@ -14,7 +14,7 @@ namespace SaiMatrimony.Models
         [Key]
         public int ProfileId { get; set; }
 
-        public string UserId { get; set; }
+        public string ProfileUserId { get; set; }
 
         [StringLength(255)]
         public string FirstName { get; set; }
@@ -52,6 +52,10 @@ namespace SaiMatrimony.Models
         public string YearOfBirth { get; set; }
 
         public DateTime UpdatedDate { get; set; }
+
+        public string UpdatedById { get; set; }
+
+        public string UpdatedByName { get; set; }
 
     }
 }

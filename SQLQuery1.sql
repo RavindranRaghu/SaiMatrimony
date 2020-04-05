@@ -1,9 +1,22 @@
 ﻿
+SELECT * FROM dbo.ProfileMatch
+
+SELECT * FROM dbo.ProfileApproved
+
+exec sp_rename 'dbo.ProfileMatch.UserId', 'ProfileUserId'
+
+ALTER TABLE dbo.ProfileMatch alter column UpdatedById varchar(255) not null
+
+ALTER TABLE dbo.ProfileMatch alter column UpdatedByName varchar(255) not null
+
+update dbo.ProfileMatch set UpdatedById ='1' , UpdatedByName = '';
+
+DELETE dbo.ProfileMatch where ProfileUserId = 'f8e8b239-7bd3-4b39-844c-eff00a7c7ce9'
 
 
 CREATE TABLE dbo.ProfileMatch(
 	ProfileId int identity(1,1) not null,
-	UserId varchar(255) not null,
+	ProfileUserId varchar(255) not null,
 	FirstName varchar(255) not null,
 	MiddleName varchar(255) null,
 	LastName varchar(255) not null,
@@ -42,10 +55,21 @@ INSERT INTO dbo.ProfileMatch VALUES (
 	getdate() 
 )
 
+DROP TABLE dbo.ProfileApproved
+
 CREATE TABLE dbo.ProfileApproved(
-ApprovalId int Identity(1,1) not null,
-UserId varchar (max) not null,
-ApprovedDate DateTime2(7) not null
+	ApprovalId int Identity(1,1) not null,
+	ProfileUserId varchar (255) not null,	
+	ApprovedByName varchar(255) not null,
+	ApprovedById varchar(255) not null,
+	ApprovedDate DateTime2(7) not null
+)
+
+INSERT INTO DBO.ProfileApproved VALUES(
+'0908a696-0ce7-43fe-a1a6-1ff163d61867',
+'Ravindran Raghu',
+'1189D78B-A8AF-4EC7-AC1F-C94307E1E51F',
+ getdate()
 )
 
 Drop table  dbo.ProfileReview

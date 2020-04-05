@@ -9,13 +9,17 @@ namespace SaiMatrimony.Models
 {
     [Table("ProfileApproved")]
 
-    public partial class ProfileAdmin
+    public partial class ProfileApproved
     {
         [Key]
         public int ApprovalId { get; set; }
 
-        public string UserId { get; set; }
-        
+        public string ProfileUserId { get; set; }
+
+        public string ApprovedByName { get; set; }
+
+        public string ApprovedById { get; set; }
+
         public DateTime ApprovedDate { get; set; }
 
     }

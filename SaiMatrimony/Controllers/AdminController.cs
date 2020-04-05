@@ -20,10 +20,13 @@ namespace SaiMatrimony.Controllers
             db = dbContext;
         }
 
+        
         public IActionResult Index()
         {
             return View();
         }
+
+        #region UserManagement
 
         public IActionResult Userwithrole(string firstName, string lastName, string email, string all)
         {
@@ -90,6 +93,7 @@ namespace SaiMatrimony.Controllers
         {
             string key = "n";
             string value = "Error Updating the User Role";
+            string userId = AuthSession.GetUserId(HttpContext, "userId");
             UserRoleMap userRoleMap = new UserRoleMap();
             try
             {
@@ -111,7 +115,7 @@ namespace SaiMatrimony.Controllers
                                 UserIdSystem = userBasic.UserIdSystem,
                                 IsAdmin = userRoleDto.IsAdmin,
                                 UpdateByName = userBasic.FirstName + " " + userBasic.MiddleName + " " + userBasic.LastName,
-                                UpdateById = userBasic.UserIdSystem,
+                                UpdateById = userId,
                                 UpdatedDate = DateTime.UtcNow
                             };
                             db.UserRoleMap.Attach(userRoleMap);
@@ -127,6 +131,10 @@ namespace SaiMatrimony.Controllers
             }
             return Json(new KeyValuePair<string, string>("y", "Role Updated Successfully"));
         }
+
+        #endregion
+
+
 
     }
 }
