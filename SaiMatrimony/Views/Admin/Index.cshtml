@@ -58,7 +58,7 @@
             <div class="modal-content">
                 <div class="modal-header" style="border-bottom:1px solid white">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" style="color:white;"> Map Role </h4>
+                    <h4 class="modal-title" style="color:white;"> Map Role for <span id="user-name"></span></h4>
                     <div class="lastUpdatedMessage" id="currentRole"></div>
                     <span class="lastUpdatedMessage" id="lastUpdatedUser"></span>
                     <input type="text" hidden="hidden" id="userId" />
@@ -151,6 +151,9 @@
 
         // Assign Role to User
         function loadUserRole() {
+
+            console.log("loading..")
+
             $("#user-table").show();
             var firstName = $("#first-name").val();
             var lastName = $("#last-name").val();
@@ -165,8 +168,7 @@
                 contentType: "application/json; charset=utf-8",
                 success: function (result) {
                     $("#user-table-msg").html(loadingHtml + result.length);
-                    if (result.length > 0) {
-
+                    if (result.length > 0) {                        
                         $('#user-pagination').pagination({
                             dataSource: result,
                             pageSize: 10,
@@ -190,9 +192,7 @@
                     }
                 },
                 error: function (errorMsg) {
-                    userTableHtml += '<tr><td colspan=6> No Search Results </td></tr>';
-                    userTableHtml += '</table>'
-                    $("#user-table").html(userTableHtml);
+                    $("#user-table").hide();
                 }
             });
         }
@@ -230,26 +230,56 @@
         $(document).on('click', ".edit-user", function () {
             $("#userId").val($(this).data("userid"));
             $("#currentRole").html('Current Role : <span style="text-decoration:underline;">' + $(this).data("rolename") + '</span>');
+            $("#user-name").html($(this).data('username'));
+            $('#lastUpdatedUser').html('');
+
+            var isadmin = $("#adminuser").is(":checked");
+            var isbasic = $("#basicuser").is(":checked");
+
+            if ($(this).data("rolename") == "Admin") {                
+                if (!isadmin) {                    
+                    $("#adminuser").prop('checked', true);
+                }
+                if (!isbasic) {                                           
+                    $("#basicuser").prop('checked', true);
+                }                
+            }
+            else if ($(this).data("rolename") == "Basic") {
+                if (isadmin) {
+                    $("#adminuser").prop('checked', false);
+                }
+                if (!isbasic) {
+                    $("#basicuser").prop('checked', true);
+                }
+            }
+            else {
+                if (isadmin) {
+                       $("#adminuser").prop('checked', false);
+                }
+                if (isbasic) {
+                       $("#basicuser").prop('checked', false);
+                }
+            }
+
             $("#userModal").modal();
         });
 
         $(document).on('click', "#saveUserRole", function () {
             var userId = $("#userId").val();
+            var isadmin = $("#adminuser").is(":checked");
+            var isbasic = $("#basicuser").is(":checked")
 
-            var mapid = $("#basicuser").is(":checked") ? "1" : "-1";
+
+            var mapid = isbasic ? "1" : "-1";
 
             var workFlowUserMap = {
                 MapId: mapid,
                 UserIdSystem: userId,
-                IsAdmin: $("#adminuser").is(":checked"),
+                IsAdmin: isadmin,
                 UpdateByName: "0",
                 UpdateById: "0",
                 UpdateDate: new Date()
             }
-
-            console.log(workFlowUserMap);
-
-            var userRoleDto = { workFlowUserMap: workFlowUserMap, Operation: "a" }
 
             $.ajax({
                 type: "POST",
@@ -260,7 +290,7 @@
                 success: function (result) {
                     if (result.key == "y") {
                         $('#lastUpdatedUser').html('Updated Successfully <span style="color:green" class="glyphicon glyphicon-ok-circle"> </span>');
-                        $('#saveUseRole').removeAttr('disabled');
+                        $('#saveUseRole').removeAttr('disabled');       
                         loadUserRole();
                     }
                     else {
