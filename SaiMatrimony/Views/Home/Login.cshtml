@@ -1,0 +1,295 @@
+﻿
+@{
+    ViewData["Title"] = "Login";
+    var id = ViewBag.id;
+    string nav = ViewBag.nav;
+    Layout = "~/Views/Shared/_LayoutLogin.cshtml";
+}
+
+<style>
+    .pad-bot {
+        padding-bottom: 23px;
+    }
+
+    .page-title-div {
+        padding-bottom: 20px;
+    }
+
+    .page-title-name {
+        font-size: xx-large;
+        padding-right: 23px;
+        color: purple;
+    }
+
+    .label-name {
+        font-size: x-large;
+        color: grey;
+    }
+
+    #login, #register {
+        min-width: 100px;
+    }
+
+    input {
+        max-width: 400px;
+    }
+
+    .ml-auto {
+        float: right !important;
+    }
+</style>
+<div id="msg" style="color:red"></div>
+<div class="row" id="existing-user">
+    <div class="col-sm-3">
+        @{
+            if (id == 1)
+            {
+                <div class="alert alert-warning" style="margin:20px;background-color:whitesmoke;">
+                    <div style="color:crimson;font-size:xx-large;padding-bottom:30px;">Access Denied <span style="font-size:x-large;" class="glyphicon glyphicon-ban-circle"></span></div>
+                    <div>Please contact the Support team <a href="mailto:webmaster@example.com">Support</a> for enquiries </div>                    
+                </div>
+            }
+            else
+            {
+
+            }
+        }
+    </div>
+    <div class="col-sm-9">
+        <div style="padding:20px;">
+            <div class="page-title-div">
+                <span class="page-title-name">Existing Member</span>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-4 pad-bot">
+                    <span class="label-name">Email Address:</span>
+                </div>
+                <div class="col-sm-8 pad-bot">
+                    <input type="text" id="eud" class="form-control" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-4 pad-bot">
+                    <span class="label-name">Password:</span>
+                </div>
+                <div class="col-sm-8 pad-bot">
+                    <input type="password" id="epd" class="form-control" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-4 pad-bot">
+
+                </div>
+                <div class="col-sm-8 pad-bot">
+                    <button type="button" style="margin-right:25px;" class="btn btn-success" id="login">Login</button>
+                </div>
+                <div class="col-sm-12 pad-bot">
+                    <span style="padding-right:15px;">I'm a New member to this site</span>
+                    <a href="#" id="goto-new"> Register </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="row" id="new-user">
+    <div class="col-sm-3">
+
+    </div>
+    <div class="col-sm-9">
+        <div style="padding:20px;">
+            <div class="page-title-div">
+                <span class="page-title-name">Welcome to our Program</span>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-4 pad-bot">
+                    <span class="label-name">Email Address:</span>
+                </div>
+                <div class="col-sm-8 pad-bot">
+                    <input type="text" id="ud" class="form-control" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-4 pad-bot">
+                    <span class="label-name">User Name:</span>
+                </div>
+                <div class="col-sm-3 pad-bot">
+                    <input type="text" id="fn" placeholder="First Name" class="form-control" />
+                </div>
+                <div class="col-sm-2 pad-bot">
+                    <input type="text" id="mn" placeholder="Middle Name" class="form-control" />
+                </div>
+                <div class="col-sm-3 pad-bot">
+                    <input type="text" id="ln" placeholder="Last Name" class="form-control" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-4 pad-bot">
+                    <span class="label-name">Title:</span>
+                </div>
+                <div class="col-sm-8 pad-bot">
+                    <input type="text" id="utitle" class="form-control" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-4 pad-bot">
+                    <span class="label-name">Password:</span>
+                </div>
+                <div class="col-sm-8 pad-bot">
+                    <input type="password" id="pd" class="form-control" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-4 pad-bot">
+                    <span class="label-name">Password Re-Enter:</span>
+                </div>
+                <div class="col-sm-8 pad-bot">
+                    <input type="password" id="pd-again" class="form-control" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-4 pad-bot">
+
+                </div>
+                <div class="col-sm-8 pad-bot">
+                    <button type="button" style="margin-right:25px;" class="btn btn-success form-control" id="register">Login</button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12 pad-bot">
+                    <span style="padding-right:15px;">I'm an Existing User</span>
+                    <a href="#" id="goto-existing"> Go Back </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script>
+    $(function(){
+        $("#new-user").hide();
+        $("#msg").hide();
+        var nav = "@nav";
+
+        $(document).on('click', "#goto-new",function(){
+            $("#new-user").fadeIn('500');
+            $("#existing-user").hide();
+            $("#msg").hide();
+        });
+        $(document).on('click', "#goto-existing",function(){
+            $("#new-user").hide();
+            $("#existing-user").fadeIn('500');
+            $("#msg").hide();
+        });
+        $(document).on('click', "#login",function(){
+            $("#msg").hide();
+            var eud = $("#eud").val();
+            if(validateEmail(eud)){
+                existingUser();
+            }
+            else{
+                $("#msg").show();
+                $("#msg").html("Invalid Email Address");
+            }
+        });
+        $(document).on('click', "#register",function(){
+             $("#msg").hide();
+            var ud = $("#ud").val();            
+            var passMin = ($("#pd").val()== $("#pd-again").val()) ? true :false ;
+            var passLen = ($("#pd").val().trim().length >= 6 ) ? true :false ;
+            if (validateEmail(ud) && passMin && passLen) {                
+                newUser();
+            }
+            else{
+                $("#msg").show();
+                $("#msg").html("Invalid ")
+                if (!validateEmail(ud)){
+                    var msg = $("#msg").html() +" Email Address;";
+                    $("#msg").html(msg);
+                }
+                if (!validatePhone(phone)){
+                    var msg = $("#msg").html()+" Phone Number;";
+                    $("#msg").html(msg);
+                }
+                if (!passMin){
+                    var msg = $("#msg").html()+" Password re-entered does not match;";
+                    $("#msg").html(msg);
+                }
+                if (!passLen){
+                    var msg = $("#msg").html()+" Password should be minimum 6 characters without any spaces";
+                    $("#msg").html(msg);
+                }
+            }
+        });
+        function existingUser(){
+            var eud = $("#eud").val();
+            var epd = $("#epd").val();
+            var detail = {eud: eud, epd: epd };
+            $.ajax({
+                url:'/home/getInExisting/',
+                type: 'POST',
+                data : JSON.stringify(detail),
+                contentType : 'application/json; charset:utf-8',
+                dataType:'json',
+                success: function (data) {
+                    console.log(data);
+                    if (data.success == "y") {
+                        window.location.href = nav;
+                    }
+                    else {
+                        $("#msg").html(data.msg);
+                        $("#msg").show();
+                    }
+                },
+                error: function (data) {
+                        $("#msg").html(data.msg);
+                        $("#msg").show();
+                }
+            })
+        }
+        function newUser(){
+            var ud = $("#ud").val();
+            var pd = $("#pd").val();
+            var fn = $("#fn").val();
+            var mn = $("#mn").val();
+            var ln = $("#ln").val();
+            var title = $("#utitle").val();
+            var detail = { UserId: 0, FirstName: fn, MiddleName: mn, LastName: ln, Email: ud, UserIdSystem: "system", PdSystem: pd};
+            $.ajax({
+                url:'/home/getInNewuser/',
+                type: 'POST',
+                data : JSON.stringify(detail),
+                contentType : 'application/json; charset:utf-8',
+                dataType:'json',
+                success: function (data) {
+                    console.log(data);
+                    if (data.success) {
+                        $("#msg").html(data.msg);
+                        $("#msg").show();
+                    }
+                },
+                error: function (data) { alert("testingfailed"); }
+            })
+        }
+        function validateEmail(email)
+        {
+            var re = /^([\w-\.]+\u0040([\w-]+\.)+[\w-]{2,4})?$/;
+            if (re.test(email)){
+                return (true);
+            }
+            return (false);
+        }
+        function validatePhone(phone)
+        {
+            var re = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{1,6}$/im;
+            if (re.test(phone)){
+                return (true);
+            }
+            return (false);
+        }
+    });
+</script>
+

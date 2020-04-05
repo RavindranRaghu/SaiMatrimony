@@ -169,7 +169,7 @@
                 var ulClassName = attributes.ulClassName;
 
                 var html = '';
-                var goInput = '<input type="text" class="J-paginationjs-go-pagenumber">';
+                var goInput = '<input type="text" class="J-paginationjs-go-pagenumber" placeholder="page no" style="font-size: 90%">';
                 var goButton = '<input type="button" class="J-paginationjs-go-button" value="' + goButtonText + '">';
                 var formattedString;
                 var i;

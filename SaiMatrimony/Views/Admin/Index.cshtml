@@ -1,0 +1,283 @@
+﻿
+@{
+    ViewData["Title"] = "Admin";
+    Layout = "~/Views/Shared/_LayoutLogin.cshtml";
+}
+
+<link rel="stylesheet" href="~/css/jqui.css">
+<link rel="stylesheet" href="~/css/pagination.css">
+<script src="~/js/jqui.js"></script>
+<script src="~/js/pagination.js"></script>
+
+<style>
+    .pad-bot {
+        padding-bottom: 20px;
+    }
+
+    .pad-top {
+        padding-top: 20px;
+    }
+</style>
+
+<div class="alert alert-success" style="font-size:23px;"> Welcome to Admin Portal</div>
+
+<div style="padding:20px;">
+
+    <h2>Sai Matrimony Users </h2>
+
+    <div class="panel panel-default" style="margin-top:15px;background-color:whitesmoke;">
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-sm-1"><input id="show-all-users" class="form-control" type="checkbox" /></div>
+                <div class="col-sm-1"><div id="show-all-label"> Show All Users</div> </div>
+                <div class="col-sm-1"></div>
+                <div class="col-sm-2"><input id="first-name" class="form-control" type="text" placeholder="first name" /></div>
+                <div class="col-sm-2"><input id="last-name" class="form-control" type="text" placeholder="last name" /></div>
+                <div class="col-sm-2"><input id="email" class="form-control" type="text" placeholder="email address" /></div>
+                <div class="col-sm-2"><button id="searchUser" type="button" class="btn btn-success">Search</button></div>
+            </div>
+        </div>
+    </div>
+    <div id="user-table-msg">
+
+    </div>
+    <div id="user-table" style="padding-top:10px;font-size:medium;">        
+        <div id="wrapper">
+            <section style="padding:10px;">
+                <div class="data-container"></div>
+                <div id="user-pagination"></div>
+            </section>
+        </div>
+    </div>
+
+</div>
+
+<div id="userModalDiv" style="color:white;">
+    <div class="modal fade" id="userModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header" style="border-bottom:1px solid white">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" style="color:white;"> Map Role </h4>
+                    <div class="lastUpdatedMessage" id="currentRole"></div>
+                    <span class="lastUpdatedMessage" id="lastUpdatedUser"></span>
+                    <input type="text" hidden="hidden" id="userId" />
+                </div>
+                <div class="modal-body" id="userModalBody" style="overflow-x: hidden">
+                    <div class="row pad-bot pad-top">
+                        <div class="col-sm-2">
+                            <input type="checkbox" class="form-control" id="basicuser" />
+                        </div>
+                        <div class="col-sm-10">
+                            <div> Grant Access to Sai Matrimony </div>
+                        </div>
+                    </div>
+                    <div class="row pad-bot">
+                        <div class="col-sm-2">
+                            <input type="checkbox" class="form-control" id="adminuser" />
+                        </div>
+                        <div class="col-sm-10">
+                            <div> Grant Admin to Sai Matrimony </div>
+                        </div>
+                    </div>
+                    <div class="row pad-bot">
+                        <div class="col-sm-12">
+                            <div class="alert alert-danger" id="adminmsg" style="display:none;">
+                                You are about to make this user Admin.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row pad-bot">
+                        <div class="col-sm-2">
+                            <button id="saveUserRole" type="button" class="btn btn-default save">Save User Access</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    $(function () {
+
+        loadUserRole();
+
+        $(document).on('click', '#searchUser', function () {
+            loadUserRole();
+        });
+
+        $(document).on('keyup', '#first-name', function () {
+            loadUserRole();
+        });
+        $(document).on('keyup', '#last-name', function () {
+            loadUserRole();
+        });
+        $(document).on('keyup', '#email', function () {
+            loadUserRole();
+        });
+        $(document).on('change', '#show-all-users', function () {
+            loadUserRole();
+        });
+
+        $(document).on('click', '#show-all-label', function () {
+            $('#show-all-users').click();            
+            loadUserRole();
+        });        
+
+        $("#adminuser").change(function () {
+
+            var isadmin = $(this).is(":checked");
+            var isbasic = $("#basicuser").is(":checked")
+
+            if (isadmin) {
+                $("#adminmsg").show();                
+            }
+            else {
+                $("#adminmsg").hide();
+            }
+
+            if (isadmin && !isbasic) {                   
+                $("#basicuser").click();
+            }
+
+            if (!isadmin && isbasic) {                   
+                $("#basicuser").click();
+            }
+
+
+        });
+
+        // Assign Role to User
+        function loadUserRole() {
+            $("#user-pagination").show();
+            var firstName = $("#first-name").val();
+            var lastName = $("#last-name").val();
+            var email = $("#email").val();
+            var all = $('#show-all-users').is(":checked") ? "y" : "n";
+            var loadingHtml= $('#show-all-users').is(":checked") ? "showing all users : " : "showing users who need access : ";
+
+            var Url = '/admin/Userwithrole?firstname=' + firstName + '&lastname=' + lastName + '&email=' + email + '&all='+all;           
+            $.ajax({
+                type: "POST",
+                url: Url,
+                contentType: "application/json; charset=utf-8",
+                success: function (result) {
+                    $("#user-table-msg").html(loadingHtml + result.length);
+                    if (result.length > 0) {
+
+                        $('#user-pagination').pagination({
+                            dataSource: result,
+                            pageSize: 10,
+                            showGoInput: true,
+                            showGoButton: true,
+                            callback: function (data, pagination) { 
+                               var userTableHtml = '<table class="table"><tr><th>First Name</th><th>Middle Name</th><th>Last Name</th><th>Email</th><th>Role</th><th>Update</th></tr>';
+                                data.forEach(function (item) {
+                                    var dataHtml = ' data-userid="' + item.userId + '" data-username="' + item.firstName + '"  data-rolename="' + item.role + '"';
+                                     var btnHtml = ' <button class="btn btn-default edit-user" ' + dataHtml + ' >Map</button>'
+                                    userTableHtml += '<tr><td>' + item.firstName + '</td><td>' + item.middleName + '</td><td>' + item.lastName + '</td><td>' + item.email + '</td><td>' + item.role + '</td><td>' + btnHtml + '</td></tr>';
+                                })
+                                userTableHtml += '</table>';
+                                $("#user-pagination").prev().html(userTableHtml);
+                                
+                            }
+                        });
+                    }
+                    else {
+                        $("#user-pagination").hide();
+                    }
+                },
+                error: function (errorMsg) {
+                    userTableHtml += '<tr><td colspan=6> No Search Results </td></tr>';
+                    userTableHtml += '</table>'
+                    $("#user-table").html(userTableHtml);
+                }
+            });
+        }
+
+
+        $("#roleForUserAutoComplete").autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    url: "/Admin/SearchRole?search=" + $("#roleForUserAutoComplete").val(),
+                    data: "{ 'searchText' : '" + $("#roleForUserAutoComplete").val() + "'}",
+                    dataFilter: function (data) { return data; },
+                    dataType: "json",
+                    success: function (data) {
+                        response($.map(data, function (item) {
+                            return {
+                                label: item.roleName,
+                                value: item.roleName,
+                                task: item.roleId
+                            }
+                        }))
+                    },
+                    error: function (result) {
+                        alert("Error");
+                    }
+                });
+            },
+            select: function (event, ui) {
+                $("#roleForUserAutoComplete").val(ui.item.label);
+                $("#roleForUser").val(ui.item.task);
+            }
+        });
+
+        $(document).on('click', ".edit-user", function () {
+            $("#userId").val($(this).data("userid"));
+            $("#currentRole").html('Current Role : <span style="text-decoration:underline;">' + $(this).data("rolename") + '</span>');
+            $("#userModal").modal();
+        });
+
+        $(document).on('click', "#saveUserRole", function () {
+            var userId = $("#userId").val();
+
+            var mapid = $("#basicuser").is(":checked") ? "1" : "-1";
+
+            var workFlowUserMap = {
+                MapId: mapid,
+                UserIdSystem: userId,
+                IsAdmin: $("adminuser").is(":checked"),
+                UpdateByName: "0",
+                UpdateById: "0",
+                UpdateDate: new Date()
+            }
+
+            console.log(workFlowUserMap);
+
+            var userRoleDto = { workFlowUserMap: workFlowUserMap, Operation: "a" }
+
+            $.ajax({
+                type: "POST",
+                url: "/Admin/ManageUserRole/",
+                data: JSON.stringify(userRoleDto),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    if (result.key == "y") {
+                        $('#lastUpdatedUser').html('Updated Successfully <span style="color:green" class="glyphicon glyphicon-ok-circle"> </span>');
+                        $('#saveUseRole').removeAttr('disabled');
+                        loadUserRole();
+                    }
+                    else {
+                        $('#lastUpdatedUser').html('Updated Failed <span style="color:red" class="glyphicon glyphicon-remove-circle"> </span>');
+                        $('#saveUseRole').removeAttr('disabled');
+                    }
+                },
+                error: function (errorMsg) {
+                    $('#lastUpdatedUser').html('<span class="alert alert-warning">' + errorMsg.statusText + '</span> ');
+                }
+            });
+        });
+
+    })
+
+
+
+
+</script>
+

@@ -262,7 +262,7 @@ http://www.templatemo.com/tm-509-hydro
 
   .custom-navbar .nav li a:hover {
     background: transparent;
-    color: hotpink;
+    color: deeppink;
   }
 
   .custom-navbar .navbar-nav > li > a:hover,
@@ -308,7 +308,7 @@ http://www.templatemo.com/tm-509-hydro
     }
 
     .top-nav-collapse .nav li a {
-      color: #575757;
+      color: hotpink;
     }
 
     .top-nav-collapse .nav .section-btn a {
@@ -337,7 +337,7 @@ http://www.templatemo.com/tm-509-hydro
     min-height: 100vh;
     position: relative;
     overflow: hidden;
-    padding-top: 10em;
+    padding-top: 7em;
     text-align: left;
   }
 
@@ -557,11 +557,15 @@ http://www.templatemo.com/tm-509-hydro
     width: 30%;
   }
 
-  .blog-thumb small {
+.avatar-img {
+    padding-top:10px;    
+}
+
+.blog-thumb small {
     color: #ce3232;
     font-weight: 500;
     display: block;
-  }
+}
 
   .blog-thumb small .fa {
     margin-right: 5px;
@@ -698,7 +702,7 @@ http://www.templatemo.com/tm-509-hydro
   #search-pane input,
   #search-pane select
   {
-    height: 55px;
+    height: 40px;
   }
 
   #contact select,  #search-pane select {
@@ -1026,7 +1030,7 @@ http://www.templatemo.com/tm-509-hydro
 
     .custom-navbar .nav li a,
     .top-nav-collapse .nav li a {
-      color: #575757;
+      color: hotpink;
     }
 
     .custom-navbar .navbar-nav.navbar-right li {

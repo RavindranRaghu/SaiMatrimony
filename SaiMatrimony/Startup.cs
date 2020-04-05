@@ -24,7 +24,7 @@ namespace SaiMatrimony
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
-            var connection = @"Server=68.66.228.7;Database=askmeaho_H2O;User ID=askmeaho_ravi;Password=Sai23@baba;Trusted_Connection=False;";
+            var connection = @"Server=(localdb)\MSSQLLocalDB;Database=smat;Trusted_Connection=true;";
             services.AddDbContext<SaiMatrimonyDb>(options => options.UseSqlServer(connection));
             services.AddSession();
             services.AddRouting();
@@ -33,6 +33,10 @@ namespace SaiMatrimony
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            app.UseSession();
+            var routeBuilder = new Microsoft.AspNetCore.Routing.RouteBuilder(app);
+            var db = app.ApplicationServices.CreateScope().ServiceProvider.GetService<SaiMatrimonyDb>();
+
             if (env.IsDevelopment())
             {
                 app.UseBrowserLink();

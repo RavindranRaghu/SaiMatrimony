@@ -9,14 +9,17 @@ namespace SaiMatrimony.Dto
 {
     public class ProfileDto
     {
-        public List<Profile> GetProfilesEndPoint(SaiMatrimonyDb db, string edu, string pro, string gen, string location, string category)
+        public List<ProfileDetails> GetProfilesEndPoint(SaiMatrimonyDb db, string edu, string pro, string gen, string location, string category)
         {
-            List<Profile> allProfiles = db.Profile.ToList();
+            List<ProfileDetails> allProfiles = (from p in db.ProfileDetails
+                                                join a in db.ProfileAdmin on p.UserId equals a.UserId
+                                                 select p).ToList();
+                
             return GetProfilesLogic(allProfiles, edu, pro, gen, location, category);
         }
 
         // Logic should be Unit Tested
-        public List<Profile> GetProfilesLogic(List<Profile> profiles, string edu, string pro, string gen, string location, string category)
+        public List<ProfileDetails> GetProfilesLogic(List<ProfileDetails> profiles, string edu, string pro, string gen, string location, string category)
         {            
             StringFunctions stringFunctions = new StringFunctions();
             if (!stringFunctions.CheckIsNullOrEmpty(edu))

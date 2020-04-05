@@ -181,7 +181,7 @@
         searchHtml += '</div>';
         searchHtml += '<div class="media blog-thumb search-detail" id="search-detail-' + profile.profileId +'">';
         searchHtml += '<div class="media-object media-left">';
-        searchHtml += '<a href="blog-detail.html"><img src="/images/avatar.png" class="img-responsive" alt=""></a>';
+        searchHtml += '<a href="blog-detail.html"><img src="/images/avatar.png" class="img-responsive avatar-img" alt=""></a>';
         searchHtml += '</div>';
         searchHtml += '<div class="media-body blog-info">';
         searchHtml += '<small><i class="fa fa-clock-o"></i> December 22, 2017</small>';

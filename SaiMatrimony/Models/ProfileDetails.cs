@@ -9,7 +9,7 @@ namespace SaiMatrimony.Models
 {
     [Table("ProfileMatch")]
 
-    public partial class Profile
+    public partial class ProfileDetails
     {
         [Key]
         public int ProfileId { get; set; }

@@ -48,8 +48,17 @@
                 <div class="home-video">
                     <div id="search-pane" style="background:linear-gradient(to right, #434343, #000000);padding:15px;">
                         <!--<iframe src="https://www.youtube.com/embed/AqcjdkPMPJA" frameborder="0" allowfullscreen></iframe>-->
-                        <div style="padding:10px;text-align:center;color:whitesmoke; width:100%;font-size:23px;">Enter Your Search Condition <span class="fa fa-search"></span></div>
-                        <div class="row" style="padding:10px;">
+
+                        <div class="media blog-thumb">
+                            <h4 style="padding:10px;">Notification <i class="fa fa-bell"></i></h4>
+                            <div class="media-body blog-info">                                
+                                <h3><a href="blog-detail.html">How To Find Out Beautiful Workspace.</a></h3>
+                                <p>Lorem ipsum dolor sit consectetur adipiscing morbi venenatis.</p>
+                                <a href="blog-detail.html" class="btn section-btn">See All Notifications</a>
+                            </div>
+                        </div>
+
+                        <div class="row" style="padding:5px;">
                             <div class="col-md-6">
                                 <input class="form-control" type="text" placeholder="Education" />
                             </div>
@@ -57,7 +66,7 @@
                                 <div> <input class="form-control" type="text" placeholder="Profession" /> </div>
                             </div>
                         </div>
-                        <div class="row" style="padding:10px;">
+                        <div class="row" style="padding:5px;">
                             <div class="col-md-6">
                                 <select class="form-control" id="search-gender" name="search-gender">
                                     <option>Gender</option>
@@ -69,7 +78,7 @@
                                 <div> <input class="form-control" type="text" placeholder="Location" /> </div>
                             </div>
                         </div>
-                        <div style="padding:10px;"><input type="submit" style="width:150px;padding:8px;" class="form-control" name="search-submit" value="Search"></div>
+                        <div style="padding:10px;"><input type="submit" style="width:150px;padding:8px;" class="form-control" name="search-submit" value="Search Profiles"></div>
                     </div>
                 </div>
             </div>
@@ -83,22 +92,22 @@
 <section id="about" data-stellar-background-ratio="0.5" style="min-height:650px;padding-top:40px;">
     <div class="container">
         <div class="row" style="padding:15px;">
-            <div class="col-md-6 col-sm-6">
+            <div class="col-md-3 col-sm-3">
                 <div class="about-info">
                     <div class="section-title">
                         <h2>Profiles</h2>
                     </div>
                 </div>
             </div>
-            <div class="col-md-2 col-sm-2">
+            <div class="col-md-3 col-sm-3">
                 <span href="#" class="badge search-btn" data-category="all">Show All</span>
             </div>
-            <div class="col-md-2 col-sm-2">
-                <span href="#" class="search-btn" data-category="proposed">Proposed</span>
+            <div class="col-md-3 col-sm-3">
+                <span href="#" class="search-btn" data-category="proposedbyme">I prorposed Someone</span>
             </div>
-            <div class="col-md-2 col-sm-2">
-                <span href="#" class="search-btn" data-categspan"accepted">Accepted</span>
-            </div>            
+            <div class="col-md-3 col-sm-3">
+                <span href="#" class="search-btn" data-category="proposedtome">Someone proposed Me</span>
+            </div>
         </div>
         <div class="row" style="padding:10px 15px 10px 15px;">
             <input type="hidden" id="category" value="all" /> 
@@ -135,20 +144,19 @@
 </section>
 
 
-<!-- BLOG
+<!-- BLOG -->
 <section id="blog" data-stellar-background-ratio="0.5">
      <div class="container">
           <div class="row">
 
                <div class="col-md-12 col-sm-12">
                     <div class="section-title">
-                         <h2>Our Blog</h2>
-                         <span class="line-bar">...</span>
+                         <h2>Notification</h2>                         
                     </div>
                </div>
 
-               <div class="col-md-6 col-sm-6">
-                    <!-- BLOG THUMB
+               <div class="col-md-12 col-sm-12">
+                    <!-- BLOG THUMB -->
                     <div class="media blog-thumb">
                          <div class="media-object media-left">
                               <a href="blog-detail.html"><img src="images/blog-image1.jpg" class="img-responsive" alt=""></a>
@@ -162,8 +170,8 @@
                     </div>
                </div>
 
-               <div class="col-md-6 col-sm-6">
-                    <!-- BLOG THUMB
+               <div class="col-md-12 col-sm-12">
+                    <!-- BLOG THUMB -->
                     <div class="media blog-thumb">
                          <div class="media-object media-left">
                               <a href="blog-detail.html"><img src="images/blog-image2.jpg" class="img-responsive" alt=""></a>
@@ -177,8 +185,8 @@
                     </div>
                </div>
 
-               <div class="col-md-6 col-sm-6">
-                    <!-- BLOG THUMB
+               @*<div class="col-md-6 col-sm-6">
+                    <!-- BLOG THUMB -->
                     <div class="media blog-thumb">
                          <div class="media-object media-left">
                               <a href="blog-detail.html"><img src="images/blog-image3.jpg" class="img-responsive" alt=""></a>
@@ -193,7 +201,7 @@
                </div>
 
                <div class="col-md-6 col-sm-6">
-                    <!-- BLOG THUMB
+                    <!-- BLOG THUMB -->
                     <div class="media blog-thumb">
                          <div class="media-object media-left">
                               <a href="blog-detail.html"><img src="images/blog-image4.jpg" class="img-responsive" alt=""></a>
@@ -205,11 +213,11 @@
                               <a href="blog-detail.html" class="btn section-btn">View Detail</a>
                          </div>
                     </div>
-               </div>
+               </div>*@
 
           </div>
      </div>
-</section -->
+</section>
 <!-- WORK -->
 <!--<section id="work" data-stellar-background-ratio="0.5">
      <div class="container">
@@ -436,7 +444,7 @@
                                 <div role="tabpanel" class="tab-pane fade in" id="sign_up">
                                     <form action="#" method="post">
                                         <input type="text" class="form-control" name="name" placeholder="Name" required>
-                                        <input type="telephone" class="form-control" name="telephone" placeholder="Telephone" required>
+                                        <input type="text" class="form-control" name="telephone" placeholder="Telephone" required>
                                         <input type="email" class="form-control" name="email" placeholder="Email" required>
                                         <input type="password" class="form-control" name="password" placeholder="Password" required>
                                         <input type="submit" class="form-control" name="submit" value="Submit Button">
@@ -455,8 +463,8 @@
 
 <!-- SCRIPTS -->
 
-<script src="js/jquery.stellar.min.js"></script>
-<script src="js/jquery.magnific-popup.min.js"></script>
-<script src="js/smoothscroll.js"></script>
+<script src="~/js/jquery.stellar.min.js"></script>
+<script src="~/js/jquery.magnific-popup.min.js"></script>
+<script src="~/js/smoothscroll.js"></script>
 <script src="~/js/pagination.js"></script>
-<script src="js/custom.js"></script>
+<script src="~/js/custom.js"></script>
