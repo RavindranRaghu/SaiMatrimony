@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SaiMatrimony.Auth;
+using SaiMatrimony.Common;
 using SaiMatrimony.Dto;
 using SaiMatrimony.Models;
 using SaiMatrimony.ViewModel;
@@ -22,16 +23,81 @@ namespace SaiMatrimony.Controllers
         }
 
         [BasicUser("basic")]
-        public IActionResult Index()
+        public IActionResult Index(string id)
         {
-            return View();
+            StringFunctions str = new StringFunctions();
+            ProfileDetails profile = new ProfileDetails();
+            bool hasError = false;
+            if (!str.CheckIsNullOrEmpty(id))
+            {
+                var hasprofile = db.ProfileDetails.Where(x => x.ProfileUserId == id);
+                if (hasprofile.Any())
+                {
+                    profile = hasprofile.FirstOrDefault();
+                }
+                else
+                {
+                    hasError = true;
+                }
+            }
+            else
+            {
+                string userId = AuthSession.GetUserId(HttpContext, "userId");                
+                var hasprofile = db.ProfileDetails.Where(x => x.MappedToUserIdSystem == userId);
+                if (hasprofile.Any())
+                {
+                    List<ProfileDetails> profiles = hasprofile.ToList();
+                    if (profiles.Count > 1)
+                    {
+                        return RedirectToAction("MultipleProfile");
+                    }
+                    profile = hasprofile.FirstOrDefault();
+                }
+            }
+            ViewBag.error = hasError;
+            
+            return View(profile);
         }
 
-        public IActionResult About()
+        public IActionResult MultipleProfile()
         {
-            ViewData["Message"] = "Your application description page.";
+            string userId = AuthSession.GetUserId(HttpContext, "userId");
+            List<ProfileDetails> profiles = db.ProfileDetails.Where(x => x.MappedToUserIdSystem == userId).ToList();
+            return View(profiles);
+        }
 
-            return View();
+        public IActionResult Profile(string id)
+        {
+            StringFunctions str = new StringFunctions();
+            
+            string userId = AuthSession.GetUserId(HttpContext, "userId");
+            ProfileDetails profile = new ProfileDetails();
+            bool hasError = false;
+            if (!str.CheckIsNullOrEmpty(id))
+            {
+                var hasprofile = db.ProfileDetails.Where(x => x.ProfileUserId == id);
+                if (hasprofile.Any())
+                {
+                    profile = hasprofile.FirstOrDefault();
+                }
+                else
+                {
+                    hasError = true;
+                }
+            }
+            else
+            {
+                UserBasic user = db.UserBasic.Where(x => x.UserIdSystem == userId).FirstOrDefault();
+                profile.ProfileId = 0;
+                profile.FirstName = user.FirstName;
+                profile.MiddleName = user.MiddleName;
+                profile.LastName = user.LastName;
+                profile.Email = user.Email;
+            }
+
+            ViewBag.error = hasError;
+
+            return View(profile);
         }
 
         public IActionResult Contact()

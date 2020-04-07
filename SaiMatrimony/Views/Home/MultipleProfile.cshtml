@@ -1,0 +1,65 @@
+﻿@model IEnumerable<SaiMatrimony.Models.ProfileDetails>
+@{
+    ViewData["Title"] = "Home Page";
+    Layout = "~/Views/Shared/_layoutlogin.cshtml";
+}
+
+@{
+    ViewData["Title"] = "MultipleProfile";
+}
+
+<style>
+     .nav-profile{
+        cursor:pointer;
+    }
+    .nav-profile:hover{
+        background-color:lemonchiffon;
+    }
+</style>
+
+    <div style="padding:30px;">
+
+        <div class="row">
+            <div class="col-sm-12" style="font-size:23px;padding-bottom:20px;">
+                Please select a profile for finding a match
+            </div>
+        </div>
+
+
+        <table class="table">
+
+            @{
+                foreach (ProfileDetails profile in Model)
+                {
+
+                    <tr style="font-size:23px;padding-bottom:10px;" data-href="/Home/Index?Id=@profile.ProfileUserId" class="nav-profile">
+                        <td >
+                            @profile.FirstName
+                        </td>
+                        <td >
+                            @profile.MiddleName
+                        </td>
+                        <td >
+                            @profile.LastName
+                        </td>
+                        <td >
+                            @profile.Email
+                        </td>
+                    </tr>
+
+                }
+            }
+        </table>
+
+        </div>
+
+
+<script>
+    $(function () {
+        $(document).on('click', ".nav-profile", function () {
+            var href = $(this).data('href');
+            location.href = href;
+        });
+    })
+</script>
+

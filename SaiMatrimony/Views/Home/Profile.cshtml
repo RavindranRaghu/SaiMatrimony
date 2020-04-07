@@ -1,28 +1,39 @@
-﻿@{
-    ViewData["Title"] = "About";
+﻿@model SaiMatrimony.Models.ProfileDetails
+@{
+    ViewData["Title"] = "Profile";
 }
-<h2>@ViewData["Title"]</h2>
-<h3>@ViewData["Message"]</h3>
+
+<div style="padding-left:20px;">
+    <h2>Profile</h2>
+    <h3>Submit your profile</h3>
+</div>
+
 
 <style>
     .pad-bot {
         padding-bottom: 20px;
     }
 </style>
-<input type="text" hidden="hidden" class="form-control" id="profile-id" value="0" />
+<input type="hidden" class="form-control" id="profile-id" value="0" />
 
 <div style="max-width:800px;padding:40px 40px 40px 60px;" id="form-profile">
     <div class="row pad-bot">
         <div class="col-sm-3">First Name</div>
-        <div class="col-sm-9"><input type="text" class="form-control" id="profile-first-name" /></div>
+        <div class="col-sm-9">
+            <input type="text" class="form-control" id="profile-first-name" value="@Model.FirstName" />
+        </div>
     </div>
     <div class="row pad-bot">
         <div class="col-sm-3">Middle Name</div>
-        <div class="col-sm-9"><input type="text" class="form-control" id="profile-middle-name" /></div>
+        <div class="col-sm-9">
+            <input type="text" class="form-control" id="profile-middle-name" value="@Model.MiddleName" />
+        </div>
     </div>
     <div class="row pad-bot">
         <div class="col-sm-3">Last Name</div>
-        <div class="col-sm-9"><input type="text" class="form-control" id="profile-last-name" /></div>
+        <div class="col-sm-9">
+            <input type="text" class="form-control" id="profile-last-name" value="@Model.LastName" />
+        </div>
     </div>
     <div class="row pad-bot">
         <div class="col-sm-3">Gender</div>
@@ -37,67 +48,67 @@
     <div class="row pad-bot">
         <div class="col-sm-3">Email</div>
         <div class="col-sm-9">
-            <input class="form-control" id="profile-email" />
+            <input class="form-control" id="profile-email" value="@Model.Email" />
         </div>
     </div>
     <div class="row pad-bot">
         <div class="col-sm-3">Phone</div>
         <div class="col-sm-9">
-            <input class="form-control" id="profile-phone" />
+            <input class="form-control" id="profile-phone" value="@Model.Phone" />
         </div>
     </div>
     <div class="row pad-bot">
         <div class="col-sm-3">City</div>
         <div class="col-sm-9">
-            <input class="form-control" id="profile-city" />
+            <input class="form-control" id="profile-city" value="@Model.City" />
         </div>
     </div>
     <div class="row pad-bot">
         <div class="col-sm-3">State</div>
         <div class="col-sm-9">
-            <input class="form-control" id="profile-state" />
+            <input class="form-control" id="profile-state" value="@Model.StateName" />
         </div>
     </div>
     <div class="row pad-bot">
         <div class="col-sm-3">Country</div>
         <div class="col-sm-9">
-            <input class="form-control" id="profile-country" />
+            <input class="form-control" id="profile-country" value="@Model.Country" />
         </div>
     </div>
     <div class="row pad-bot">
         <div class="col-sm-3">Zip Code</div>
         <div class="col-sm-9">
-            <input class="form-control" id="profile-zipcode" />
+            <input class="form-control" id="profile-zipcode" value="@Model.ZipCode" />
         </div>
     </div>
     <div class="row pad-bot">
         <div class="col-sm-3">Education</div>
         <div class="col-sm-9">
-            <textarea class="form-control" id="profile-education"> </textarea>
+            <textarea class="form-control" id="profile-education">@Model.Education </textarea>
         </div>
     </div>
     <div class="row pad-bot">
         <div class="col-sm-3">Profession</div>
         <div class="col-sm-9">
-            <input class="form-control" id="profile-profession" />
+            <input class="form-control" id="profile-profession"  value="@Model.Profession" />
         </div>
     </div>
     <div class="row pad-bot">
         <div class="col-sm-3">Interest</div>
         <div class="col-sm-9">
-            <textarea class="form-control" id="profile-interest"> </textarea>
+            <textarea class="form-control" id="profile-interest"> @Model.Interest </textarea>
         </div>
     </div>
     <div class="row pad-bot">
         <div class="col-sm-3">Expectation</div>
         <div class="col-sm-9">
-            <textarea class="form-control" id="profile-expectation"> </textarea>
+            <textarea class="form-control" id="profile-expectation"> @Model.Expectation </textarea>
         </div>
     </div>
     <div class="row pad-bot">
         <div class="col-sm-3">Year of Birth</div>
         <div class="col-sm-9">
-            <input class="form-control" id="profile-yearofbirth" />
+            <input class="form-control" id="profile-yearofbirth" value="@Model.YearOfBirth" /> 
         </div>
     </div>
     <div class="row pad-bot">
@@ -115,9 +126,9 @@
 
     $(function () {
 
-        $("#save-profile").click(function(){
+        $("#save-profile").click(function () {
             var profileDetails = getProfile();
-             $.ajax({
+            $.ajax({
                 type: "POST",
                 url: "/Profile/ManageProfile/",
                 data: JSON.stringify(profileDetails),
@@ -126,7 +137,7 @@
                 success: function (result) {
                     if (result.key == "y") {
                         $('#profile-msg').html('Updated Successfully <span style="color:green" class="glyphicon glyphicon-ok-circle"> </span>');
-                        disableForm();                           
+                        disableForm();
                     }
                     else {
                         $('#profile-msg').html('Updated Failed <span style="color:red" class="glyphicon glyphicon-remove-circle"> </span>');
@@ -140,7 +151,7 @@
 
         });
 
-        function disableForm () {
+        function disableForm() {
             $("#form-profile  input").attr('disabled', 'disabled');
             $("#form-profile  select").attr('disabled', 'disabled');
             $("#form-profile  button").attr('disabled', 'disabled');
@@ -168,7 +179,7 @@
                 UpdatedDate: new Date(),
                 UpdatedById: "0",
                 UpdatedByName: "0"
-            };            
+            };
             return profile;
         }
     })

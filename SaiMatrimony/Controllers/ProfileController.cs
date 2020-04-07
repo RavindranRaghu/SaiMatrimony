@@ -34,6 +34,7 @@ namespace SaiMatrimony.Controllers
                     profileDetails.UpdatedDate = DateTime.UtcNow;
                     profileDetails.UpdatedByName = userBasic.FirstName + " " + userBasic.MiddleName + " " + userBasic.LastName;
                     profileDetails.UpdatedById = userId;
+                    profileDetails.MappedToUserIdSystem = userId;
 
                     db.ProfileDetails.Attach(profileDetails);
                     db.ProfileDetails.Add(profileDetails);
@@ -61,11 +62,11 @@ namespace SaiMatrimony.Controllers
                     profileDetails.UpdatedById = userId;
                 }
                 db.SaveChanges();
-                return Json("y");
+                return Json(new KeyValuePair<string, string>("y","Profile Saved Successfully"));
             }
             catch (Exception)
             {
-                return Json("n");
+                return Json(new KeyValuePair<string, string>("n", "Error saving profile, contact support"));
             }
         }
 

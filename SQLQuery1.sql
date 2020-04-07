@@ -9,7 +9,9 @@ ALTER TABLE dbo.ProfileMatch alter column UpdatedById varchar(255) not null
 
 ALTER TABLE dbo.ProfileMatch alter column UpdatedByName varchar(255) not null
 
-update dbo.ProfileMatch set UpdatedById ='1' , UpdatedByName = '';
+ALTER TABLE dbo.ProfileMatch alter column MappedToUserIdSystem varchar(255) not null
+
+update dbo.ProfileMatch set MappedToUserIdSystem ='1' , UpdatedByName = '';
 
 DELETE dbo.ProfileMatch where ProfileUserId = 'f8e8b239-7bd3-4b39-844c-eff00a7c7ce9'
 

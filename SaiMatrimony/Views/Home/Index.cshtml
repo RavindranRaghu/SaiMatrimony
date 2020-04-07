@@ -1,5 +1,8 @@
-﻿@{
+﻿@model SaiMatrimony.Models.ProfileDetails
+@{
     ViewData["Title"] = "Home Page";
+    string profileName = Model.ProfileId != 0 ? Model.FirstName : "No Profile Set";
+    bool error = ViewBag.error;
 }
 
 <link rel="stylesheet" href="~/css/pagination.css">
@@ -52,7 +55,13 @@
                         <div class="media blog-thumb">
                             <h4 style="padding:10px;">Notification <i class="fa fa-bell"></i></h4>
                             <div class="media-body blog-info">                                
-                                <h3><a href="blog-detail.html">How To Find Out Beautiful Workspace.</a></h3>
+                                <h3><a href="blog-detail.html">Profile : @profileName </a></h3>
+                                @{ 
+                                    if (error)
+                                    {
+                                        <div>Error loading profile. contact support</div>
+                                    }
+                                }
                                 <p>Lorem ipsum dolor sit consectetur adipiscing morbi venenatis.</p>
                                 <a href="blog-detail.html" class="btn section-btn">See All Notifications</a>
                             </div>

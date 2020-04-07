@@ -57,5 +57,7 @@ namespace SaiMatrimony.Models
 
         public string UpdatedByName { get; set; }
 
+        public string MappedToUserIdSystem { get; set; }
+
     }
 }

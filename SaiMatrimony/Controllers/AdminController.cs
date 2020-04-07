@@ -134,6 +134,45 @@ namespace SaiMatrimony.Controllers
 
         #endregion
 
+        #region ReviewProfile
+        public IActionResult Profile(string firstName, string lastName, string email, string all)
+        {
+            StringFunctions common = new StringFunctions();
+            List<ProfileDetails> profileDetails = new List<ProfileDetails>();
+            List<ProfileDetails> profiles = db.ProfileDetails.ToList();            
+
+            profileDetails = (from user in profiles
+                              select new ProfileDetails
+                              {
+                                   ProfileId = user.ProfileId,
+                                   FirstName = user.FirstName,
+                                   MiddleName = user.MiddleName,
+                                   LastName = user.LastName,
+                                   Email = user.Email,
+                                   Profession = user.Profession,
+                                   Education = user.Education
+                               }).ToList();
+
+            if (!common.CheckIsNullOrEmpty(firstName))
+            {
+                profileDetails = profileDetails.Where(x => x.FirstName.ToLower().Contains(firstName)).ToList();
+            }
+
+            if (!common.CheckIsNullOrEmpty(lastName))
+            {
+                profileDetails = profileDetails.Where(x => x.LastName.ToLower().Contains(lastName)).ToList();
+            }
+
+            if (!common.CheckIsNullOrEmpty(email))
+            {
+                profileDetails = profileDetails.Where(x => x.Email.ToLower().Contains(email)).ToList();
+            }
+
+            return Json(profileDetails);
+        }
+
+        #endregion
+
 
 
     }
