@@ -1,13 +1,15 @@
 ﻿@model SaiMatrimony.Models.ProfileDetails
 @{
     ViewData["Title"] = "Home Page";
-    string profileName = Model.ProfileId != 0 ? Model.FirstName : "No Profile Set";
+    string profileName = Model.ProfileId != 0 ? Model.FirstName + " " + Model.MiddleName +" " + Model.LastName  :  "No Profile Set";
     bool error = ViewBag.error;
+
 }
 
 <link rel="stylesheet" href="~/css/pagination.css">
 
 <style>
+
     .paginationjs .paginationjs-pages ul {
         margin: auto;
         padding-left: 23px;
@@ -15,6 +17,8 @@
     .paginationjs .paginationjs-pages li.active > a {
         background-color:crimson;
     }
+
+
     #about .badge {
         background-color:crimson;
         color:white;
@@ -104,7 +108,7 @@
             <div class="col-md-3 col-sm-3">
                 <div class="about-info">
                     <div class="section-title">
-                        <h2>Profiles</h2>
+                        <h2>Find a Match</h2>
                     </div>
                 </div>
             </div>
@@ -462,6 +466,44 @@
                             </div>
                         </div>
 
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<section class="modal fade" id="match-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content modal-popup">
+
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                Propose a Match
+            </div>
+
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <input id="proposed-from-id" type="hidden" value="@Model.ProfileUserId" />
+                            <input id="proposed-from-name" type="hidden" value="@profileName" />
+                            <input id="proposed-to-id" type="hidden" />
+                            <input id="proposed-to-name" type="hidden" />
+                            <input id="propose-action" type="hidden" value="makeproposal" />
+                            <div id="proposed-text" style="color:white"></div>
+                        </div>
+                    </div>
+                    <div class="row" style="padding-top:20px;">
+                        <div class="col-sm-4">
+
+                        </div>
+                        <div class="col-sm-4">
+                            <button id="match-profile" type="submit">Propose</button>
+                        </div>
                     </div>
                 </div>
             </div>

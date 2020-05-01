@@ -12,8 +12,9 @@ namespace SaiMatrimony.Dto
         public List<ProfileDetails> GetProfilesEndPoint(SaiMatrimonyDb db, string edu, string pro, string gen, string location, string category)
         {
             List<ProfileDetails> allProfiles = (from p in db.ProfileDetails
-                                                join a in db.ProfileApproved on p.ProfileUserId equals a.ProfileUserId
-                                                 select p).ToList();
+                                                where p.IsProfileApproved
+                                                select p
+                                                ).ToList();
                 
             return GetProfilesLogic(allProfiles, edu, pro, gen, location, category);
         }
@@ -21,7 +22,7 @@ namespace SaiMatrimony.Dto
         // Logic should be Unit Tested
         public List<ProfileDetails> GetProfilesLogic(List<ProfileDetails> profiles, string edu, string pro, string gen, string location, string category)
         {            
-            StringFunctions stringFunctions = new StringFunctions();
+            CommonFunction stringFunctions = new CommonFunction();
             if (!stringFunctions.CheckIsNullOrEmpty(edu))
             {
                 profiles = profiles.Where(x => x.Education.ToLower().Contains(edu.ToLower())).ToList();

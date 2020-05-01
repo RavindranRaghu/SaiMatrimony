@@ -17,14 +17,17 @@
     .pad-top {
         padding-top: 20px;
     }
+
+    .paginationjs {
+        text-align: center !important;
+    }
 </style>
 
 <div class="alert alert-success" style="font-size:23px;"> Welcome to Admin Portal</div>
 
+
 <div style="padding:20px;">
-
     <h2>Sai Matrimony Users </h2>
-
     <div class="panel panel-default" style="margin-top:15px;background-color:whitesmoke;">
         <div class="panel-body">
             <div class="row">
@@ -41,7 +44,7 @@
     <div id="user-table-msg">
 
     </div>
-    <div id="user-table" style="padding-top:10px;font-size:medium;">        
+    <div id="user-table" style="padding-top:10px;font-size:medium;">
         <div id="wrapper">
             <section style="padding:10px;">
                 <div class="data-container"></div>
@@ -49,7 +52,6 @@
             </section>
         </div>
     </div>
-
 </div>
 
 <div id="userModalDiv" style="color:white;">
@@ -99,6 +101,58 @@
 </div>
 
 
+<div style="padding:20px;">
+    <h2>Sai Matrimony Profiles </h2>
+    <div class="panel panel-default" style="margin-top:15px;background-color:whitesmoke;">
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-sm-1"><input id="show-all-profiles" class="form-control" type="checkbox" /></div>
+                <div class="col-sm-1"><div id="show-all-label-profile"> Show All Profiles</div> </div>
+                <div class="col-sm-1"></div>
+                <div class="col-sm-2"><input id="profile-first-name" class="form-control" type="text" placeholder="first name" /></div>
+                <div class="col-sm-2"><input id="profile-last-name" class="form-control" type="text" placeholder="last name" /></div>
+                <div class="col-sm-2"><input id="profile-email" class="form-control" type="text" placeholder="email address" /></div>
+                <div class="col-sm-2"><button id="profile-searchUser" type="button" class="btn btn-success">Search</button></div>
+            </div>
+        </div>
+    </div>
+    <div id="profile-table-msg">
 
-<script src="~/js/admin/manageuser.js"> </script>
+    </div>
+    <div id="profile-table" style="padding-top:10px;font-size:medium;">
+        <div id="wrapper">
+            <section style="padding:10px;">
+                <div class="data-container"></div>
+                <div id="profile-pagination"></div>
+            </section>
+        </div>
+    </div>
+</div>
+
+<div id="profileModalDiv" style="color:white;">
+    <div class="modal fade" id="profileModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header" style="border-bottom:1px solid white">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" style="color:white;"> Profile  : <span id="profile-name"></span></h4>
+                    <span class="lastUpdatedProfile" id="lastUpdatedProfile"></span>
+                    <input type="text" hidden="hidden" id="profileId" />
+                    <input type="text" hidden="hidden" id="profileApproval" />
+                </div>
+                <div class="modal-body" id="profileModalBody" style="overflow-x: hidden">                    
+                    <div class="row pad-bot" style="padding-top:20px;">
+                        <div class="col-sm-2">
+                            <button id="saveProfile" type="button" class="btn btn-default save"><span id="saveProfileSpan">Approve Profile</span></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/js/admin/manageuser.js"></script>
+<script src="~/js/admin/manageprofile.js"></script>
+
 

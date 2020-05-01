@@ -3,25 +3,25 @@ $(function () {
     loadProfiles();
 
     $(document).on('click', '#searchprofile', function () {
-        loadUserRole();
+        loadProfiles();
     });
 
     $(document).on('keyup', '#profile-first-name', function () {
-        loadUserRole();
+        loadProfiles();
     });
     $(document).on('keyup', '#profile-last-name', function () {
-        loadUserRole();
+        loadProfiles();
     });
     $(document).on('keyup', '#profile-email', function () {
-        loadUserRole();
+        loadProfiles();
     });
     $(document).on('change', '#show-all-profiles', function () {
-        loadUserRole();
+        loadProfiles();
     });
 
     $(document).on('click', '#show-all-label', function () {
         $('#show-all-users').click();
-        loadUserRole();
+        loadProfiles();
     });
 
     $("#adminuser").change(function () {
@@ -73,9 +73,10 @@ $(function () {
                         callback: function (data, pagination) {
                             var userTableHtml = '<table class="table"><tr><th>First Name</th><th>Middle Name</th><th>Last Name</th><th>Email</th><th>Role</th><th>Update</th></tr>';
                             data.forEach(function (item) {
-                                var dataHtml = ' data-userid="' + item.userId + '" data-username="' + item.firstName + '"  data-rolename="' + item.role + '"';
-                                var btnHtml = ' <button class="btn btn-default edit-user" ' + dataHtml + ' >Map</button>'
-                                userTableHtml += '<tr><td>' + item.firstName + '</td><td>' + item.middleName + '</td><td>' + item.lastName + '</td><td>' + item.email + '</td><td>' + item.role + '</td><td>' + btnHtml + '</td></tr>';
+                                var dataHtml = ' data-profileid="' + item.profileId + '" data-firstname="' + item.firstName + '"  data-lastname="' + item.lastName + '"';
+                                var btnHtml = ' <button class="btn btn-default edit-profile" data-approval="y" ' + dataHtml + ' >Approve</button>'
+                                btnHtml += ' <button class="btn btn-default edit-profile" data-approval="n" ' + dataHtml + ' >Reject</button>'
+                                userTableHtml += '<tr><td>' + item.firstName + '</td><td>' + item.middleName + '</td><td>' + item.lastName + '</td><td>' + item.email + '</td><td>' + item.profession + '</td><td>' + btnHtml + '</td></tr>';
                             })
                             userTableHtml += '</table>';
                             $("#profile-pagination").prev().html(userTableHtml);
@@ -94,32 +95,34 @@ $(function () {
     }
     
     $(document).on('click', ".edit-profile", function () {        
-        $("#profileid").val($(this).data('profileid'));
-        $("#profileapproval").val($(this).data('approval'));
+        $("#profileId").val($(this).data('profileid'));
+        $("#profileApproval").val($(this).data('approval'));
+        $("#profile-name").html($(this).data('firstname') + " " + $(this).data('lastname'))
 
         if ($(this).data('approval') == "y") {
-            $('#lastUpdatedProfile').html('You are about to approve the profile' + $(this).data('profilename'));
+            $('#lastUpdatedProfile').html('<span style="color:green;">You are about to Approve the profile</span>');
         } else {
-            $('#lastUpdatedProfile').html('You are about to reject the profile' + $(this).data('profilename'));
+            $('#lastUpdatedProfile').html('<span style="color:red;">You are about to Reject the profile</span>');
         }        
         
         $("#profileModal").modal();
     });
 
-    $(document).on('click', ".saveApprovalProfile", function () {
-        var profile = $("#profileid").val();
-        var approved = $("#profileapproval").val();
+    $(document).on('click', "#saveProfile", function () {
+        var profile = $("#profileId").val();
+        var approved = $("#profileApproval").val();
         $.ajax({
             type: "POST",
-            url: "/Admin/ManageProfile?profileid=" + profile + "&approved=" + approved,            
+            url: "/Admin/ProcessProfile?profileid=" + profile + "&approved=" + approved,            
             success: function (result) {
-                if (result.key == "y") {
+                console.log(result);
+                if (result == "y") {
                     $('#lastUpdatedProfile').html('Updated Successfully <span style="color:green" class="glyphicon glyphicon-ok-circle"> </span>');
                     $('#saveProfile').removeAttr('disabled');
                     loadUserRole();
                 }
                 else {
-                    $('#lastUpdatedUser').html('Updated Failed <span style="color:red" class="glyphicon glyphicon-remove-circle"> </span>');
+                    $('#lastUpdatedProfile').html('Updated Failed <span style="color:red" class="glyphicon glyphicon-remove-circle"> </span>');
                     $('#saveProfile').removeAttr('disabled');
                 }
             },

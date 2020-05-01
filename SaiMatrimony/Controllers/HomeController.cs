@@ -25,7 +25,7 @@ namespace SaiMatrimony.Controllers
         [BasicUser("basic")]
         public IActionResult Index(string id)
         {
-            StringFunctions str = new StringFunctions();
+            CommonFunction str = new CommonFunction();
             ProfileDetails profile = new ProfileDetails();
             bool hasError = false;
             if (!str.CheckIsNullOrEmpty(id))
@@ -55,7 +55,7 @@ namespace SaiMatrimony.Controllers
                 }
             }
             ViewBag.error = hasError;
-            
+
             return View(profile);
         }
 
@@ -68,7 +68,7 @@ namespace SaiMatrimony.Controllers
 
         public IActionResult Profile(string id)
         {
-            StringFunctions str = new StringFunctions();
+            CommonFunction str = new CommonFunction();
             
             string userId = AuthSession.GetUserId(HttpContext, "userId");
             ProfileDetails profile = new ProfileDetails();
@@ -212,7 +212,7 @@ namespace SaiMatrimony.Controllers
             var result = new { hasValue = hasValue, User = user };
             return Json(result);
         }
-
+        
 
     }
 }

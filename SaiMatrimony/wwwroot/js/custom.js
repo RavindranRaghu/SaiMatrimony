@@ -159,12 +159,13 @@
     }
 
     function searchHtmlForProfile(profile) {
+        var name = profile.firstName + " " + profile.middleName + " " + profile.lastName
         var searchHtml = '<div class="search-items">';
         searchHtml += '<div class="search-main" data-searchid="' + profile.profileId+'">';
         searchHtml += '<div class="row">';
         searchHtml += '<div class="col-md-4">';
         searchHtml += '<span class="search-main-title">Name: </span>';
-        searchHtml += '<span class="search-main-text">' + profile.firstName + " " + profile.lastName + '</span>';
+        searchHtml += '<span class="search-main-text">' + name + '</span>';
         searchHtml += '</div>';
         searchHtml += '<div class="col-md-3">';
         searchHtml += '<span class="search-main-title">Year Born: </span>';
@@ -186,12 +187,68 @@
         searchHtml += '<div class="media-body blog-info">';
         searchHtml += '<small><i class="fa fa-clock-o"></i> December 22, 2017</small>';
         searchHtml += '<h3><a href="blog-detail.html">' + profile.interest +'</a></h3>';
-        searchHtml += '<p>' + profile.expectation +'</p>';
-        searchHtml += '<a href="blog-detail.html" class="btn section-btn">Propose Match</a>';
+        searchHtml += '<p>' + profile.expectation + '</p>';
+        searchHtml += '<a href="#" class="btn section-btn match-profile" data-userid="' + profile.profileUserId + '" data-name="' + name +' ' + '">Propose Match</a>';
         searchHtml += '</div>';
         searchHtml += '</div>';
         searchHtml += '</div>';
         return searchHtml;
     }
+
+    $(document).on('click', ".match-profile", function () {
+        $("#proposed-to-id").val($(this).data('userid'));
+        $("#proposed-to-name").val($(this).data('name'));
+        $("#proposed-text").html($("#proposed-from-name").val() + " is proposing to " + $("#proposed-to-name").val());
+        $("#match-profile").removeAttr('disabled');
+
+        var toId = $("#proposed-to-id").val();
+        var fromId = $("#proposed-from-id").val();
+        var maction = $("#propose-action").val();
+
+        var url = "/profile/MatchExist?toid=" + toId + "&fromid=" + fromId + "&maction=" + maction;
+        $.ajax({
+            url: url,
+            type: 'POST',
+            contentType: "application/json; charset=utf-8",
+            async: false,
+            success: function (result) {                
+                if (result.key == "y") {
+                    window.location.href = "/profile/matchdetail?reviewid=" + result.value + "&fromid=" + fromId
+                }
+                else {
+                    $("#match-modal").modal();
+                }
+            },
+            error: function (error) {
+                $("#match-modal").modal();
+            }
+        });
+
+        $("#match-modal").modal();
+    })
+
+    $(document).on('click', "#match-profile", function () {
+        var toId = $("#proposed-to-id").val();
+        var fromId = $("#proposed-from-id").val();
+        var maction = $("#propose-action").val();
+
+        var url = "/profile/setmatch?toid=" + toId + "&fromid=" + fromId + "&maction=" + maction ;
+        $.ajax({
+            url: url,
+            type: 'POST',
+            contentType: "application/json; charset=utf-8",
+            async: false,
+            success: function (result) {                
+                if (result.key == "y") {
+                    $("#proposed-text").html(result.value + ' <span class="glyphicon glyphicon-ok-sign" style="color:green;"></span>');
+                    $("#match-profile").attr('disabled', 'disabled')
+                }                
+            },
+            error: function (error) {
+                $("#proposed-text").html("Error");
+            }
+        });
+
+    })
 
 })(jQuery);

@@ -11,7 +11,9 @@ ALTER TABLE dbo.ProfileMatch alter column UpdatedByName varchar(255) not null
 
 ALTER TABLE dbo.ProfileMatch alter column MappedToUserIdSystem varchar(255) not null
 
-update dbo.ProfileMatch set MappedToUserIdSystem ='1' , UpdatedByName = '';
+ALTER TABLE dbo.ProfileMatch alter column IsProfileApproved bit not null
+
+update dbo.ProfileMatch set IsProfileApproved ='1' , UpdatedByName = '';
 
 DELETE dbo.ProfileMatch where ProfileUserId = 'f8e8b239-7bd3-4b39-844c-eff00a7c7ce9'
 
@@ -75,18 +77,31 @@ INSERT INTO DBO.ProfileApproved VALUES(
 )
 
 Drop table  dbo.ProfileReview
+
 CREATE TABLE dbo.ProfileReview(
-	ReviewId int Identity(1,1) not null,
-	ProposedByUserId varchar (max) not null,
+	ProfileReviewId int Identity(1,1) not null,
+	ProposedFromUserId varchar (max) not null,
 	ProposedToUserId varchar (max) not null,
-	HasInitiatedDiscussion bit not null,
-	DateInitiatedDiscussion datetime2(7) not null,
-	HasAcceptedDiscussion bit not null,
-	DateAcceptedDiscussion datetime2(7) not null,
 	HasMadeProposal bit not null,
-	DateMadeProposal datetime2(7) not null,
-	HasAcceptedProposal bit not null,
-	DateAcceptedProposal datetime2(7) not null
+	DateMadeProposal datetime2(7) null,
+	HasAcceptedDiscussion bit not null,
+	DateAcceptedDiscussion datetime2(7) null,
+	HasAcceptedProposal bit not null,	
+	DateAcceptedProposal datetime2(7) null,
+	HasRejectedProposal bit not null,
+	DateRejectedProposal datetime2(7)  null,
+	HasCancelledProposal bit not null,
+	DateCancelledProposal datetime2(7)  null,
+)
+
+Drop table  dbo.ProfileComments
+CREATE TABLE dbo.ProfileComment(
+	CommentId int Identity(1,1) not null,
+	ProfileReviewId int not null,
+	CommentText varchar(1000) not null,
+	CommentByUserId varchar (255) not null,
+	CommentByUserName varchar (255) not null,
+	CommentDate DateTime2(7) not null,
 )
 
 select * from dbo.ProfileMatch
@@ -133,3 +148,10 @@ SELECT * FROM UserBasic
  GETDATE()
  )
 
+ truncate table DBO.ProfileReview
+ SELECT * FROM DBO.ProfileReview
+
+ truncate table DBO.ProfileComment
+ SELECT * FROM DBO.ProfileComment
+
+ SELECT * FROM DBO.ProfileMatch

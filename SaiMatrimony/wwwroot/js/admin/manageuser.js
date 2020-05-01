@@ -76,7 +76,7 @@ $(function () {
                             var userTableHtml = '<table class="table"><tr><th>First Name</th><th>Middle Name</th><th>Last Name</th><th>Email</th><th>Role</th><th>Update</th></tr>';
                             data.forEach(function (item) {
                                 var dataHtml = ' data-userid="' + item.userId + '" data-username="' + item.firstName + '"  data-rolename="' + item.role + '"';
-                                var btnHtml = ' <button class="btn btn-default edit-user" ' + dataHtml + ' >Map</button>'
+                                var btnHtml = ' <button class="btn btn-default edit-user" ' + dataHtml + ' >Approve</button>'
                                 userTableHtml += '<tr><td>' + item.firstName + '</td><td>' + item.middleName + '</td><td>' + item.lastName + '</td><td>' + item.email + '</td><td>' + item.role + '</td><td>' + btnHtml + '</td></tr>';
                             })
                             userTableHtml += '</table>';

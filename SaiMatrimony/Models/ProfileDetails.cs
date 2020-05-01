@@ -59,5 +59,7 @@ namespace SaiMatrimony.Models
 
         public string MappedToUserIdSystem { get; set; }
 
+        public bool IsProfileApproved { get; set; }
+
     }
 }

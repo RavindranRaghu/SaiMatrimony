@@ -62,12 +62,60 @@ namespace SaiMatrimony.Controllers
                     profileDetails.UpdatedById = userId;
                 }
                 db.SaveChanges();
-                return Json(new KeyValuePair<string, string>("y","Profile Saved Successfully"));
+                return Json(new KeyValuePair<string, string>("y", "Profile Saved Successfully"));
             }
             catch (Exception)
             {
                 return Json(new KeyValuePair<string, string>("n", "Error saving profile, contact support"));
             }
+        }
+
+        public IActionResult SetMatch(string fromid, string toid, string maction)
+        {
+            KeyValuePair<bool, string> sMatch = new ProfileWorkFlow().SetMatch(db, fromid, toid, maction, 0);
+            return Json(new KeyValuePair<string, string>(sMatch.Key ?"y": "n", sMatch.Value));
+        }
+
+        public IActionResult MatchExist(string fromid, string toid, string maction)
+        {
+            int profileId = 0;
+            var hasMatch = db.ProfileReview.Where(x => x.ProposedFromUserId == fromid && x.ProposedToUserId == toid);
+            var hasReMatch = db.ProfileReview.Where(x => x.ProposedToUserId == fromid && x.ProposedFromUserId == toid);
+            if (hasMatch.Any() )
+            {
+                profileId = hasMatch.Select(x=>x.ProfileReviewId).FirstOrDefault();
+                return Json(new KeyValuePair<string, int>("y" , profileId));
+            }            
+            else if (hasReMatch.Any())
+            {
+                profileId = hasReMatch.Select(x => x.ProfileReviewId).FirstOrDefault();
+                return Json(new KeyValuePair<string, int>("y", profileId));
+            }
+            return Json(new KeyValuePair<string, int>("n", 0));
+        }
+
+        public IActionResult MatchDetail(int reviewid, string fromid)
+        {                        
+            ProfileReview profile = new ProfileReview();
+            ProfileDetails pdetail = new ProfileDetails();
+            List<ProfileComment> comments = new List<ProfileComment>();
+            bool iProposed = false;
+            string profileId = "";
+
+            var hasMatch = db.ProfileReview.Where(x => x.ProfileReviewId == reviewid);
+            if (hasMatch.Any())
+            {
+                profile = hasMatch.FirstOrDefault();                
+                profileId = profile.ProposedFromUserId == fromid ? profile.ProposedToUserId : profile.ProposedFromUserId;
+                iProposed = profile.ProposedFromUserId == fromid ? true : false;
+                pdetail = db.ProfileDetails.Where(x => x.ProfileUserId == profileId).FirstOrDefault();
+                comments = db.ProfileComment.Where(x => x.ProfileReviewId == reviewid).ToList();
+            }
+
+            ViewBag.profile = profile;
+            ViewBag.iProposed = iProposed;
+            ViewBag.comments = comments;
+            return View(pdetail);
         }
 
     }

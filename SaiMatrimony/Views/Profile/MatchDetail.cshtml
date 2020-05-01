@@ -1,0 +1,196 @@
+﻿@model SaiMatrimony.Models.ProfileDetails
+
+@{
+    ViewData["Title"] = "MatchDetail";
+    ProfileReview profileReview = (ProfileReview)ViewBag.profile;
+    bool iProposed = (bool)ViewBag.iProposed;
+    List<ProfileComment> comments = (List<ProfileComment>)ViewBag.comments;
+}
+
+<style>
+   .pad-bot{
+       padding:10px;
+   }
+
+   .right {
+       text-align :right;       
+   }
+
+   .profile {
+       font-size:medium;
+   }
+
+</style>
+
+<div style="padding:20px;">
+    <h4>Profile Details: </h4>
+    <div class="row">
+        <div class="col-sm-4"></div>
+        <div class="col-sm-8">
+            @{
+                if (!iProposed && !profileReview.HasAcceptedDiscussion)
+                {
+                    <button class="btn btn-success match-profile" data-actiontype="acceptdiscussion">Accept Discussion</button>
+                }
+                else if (!iProposed && profileReview.HasAcceptedDiscussion)
+                {
+                    <span style="color:green;">You Accepted to Discussion</span>
+                }
+
+
+                if (!iProposed && !profileReview.HasAcceptedProposal)
+                {
+                    <button class="btn btn-success match-profile" data-actiontype="acceptproposal">Accept Proposal</button>
+                }
+                else if (!iProposed && profileReview.HasAcceptedProposal)
+                {
+                    <span style="color:green;">You Accepted to Proposal</span>
+                }
+
+
+                //i proposed
+
+                if (iProposed && !profileReview.HasAcceptedDiscussion)
+                {
+                    <span class="badge" style="background-color:crimson;color:white;">Yet to Accept Discussion</span>
+                }
+                else if (iProposed && profileReview.HasAcceptedDiscussion)
+                {
+                    <span class="badge" style="background-color:lightseagreen;color:white;">Accepted Discussion with you</span>
+                }
+
+
+                if (iProposed && !profileReview.HasAcceptedProposal)
+                {
+                    <span class="badge" style="background-color:crimson;color:white;">Yet to Accept Proposal</span>
+                }
+                else if (iProposed && profileReview.HasAcceptedProposal)
+                {
+                    <span class="badge" style="background-color:lightseagreen;color:white;">Accepted Proposal with you</span>
+                }
+
+
+
+            }
+        </div>
+    </div>
+    <hr />
+    <div class="row profile">
+        <div class="col-sm-8">
+            <div class="row pad-bot">
+                <div class="col-sm-4 right">
+                    Name:
+                </div>
+                <div class="col-sm-8">
+                    @Html.DisplayFor(model => model.FirstName)  @Html.DisplayFor(model => model.MiddleName) @Html.DisplayFor(model => model.LastName) ( @Html.DisplayFor(model => model.Gender) )
+                </div>
+            </div>
+
+            <div class="row pad-bot">
+                <div class="col-sm-4 right">
+                    Year of Birth:
+                </div>
+                <div class="col-sm-8">
+                    @Html.DisplayFor(model => model.YearOfBirth)
+                </div>
+            </div>
+
+            <div class="row pad-bot">
+                <div class="col-sm-4 right">
+                    Contact:
+                </div>
+                <div class="col-sm-8">
+                    <a href="mailto:@Model.Email">@Html.DisplayFor(model => model.Email) </a>
+                    @if (profileReview.HasAcceptedProposal || profileReview.HasAcceptedDiscussion)
+                    {
+                        @Html.DisplayFor(model => model.Phone)
+                    }
+                </div>
+            </div>
+
+            <div class="row pad-bot">
+                <div class="col-sm-4 right">
+                    Location:
+                </div>
+                <div class="col-sm-8">
+                    @Html.DisplayFor(model => model.City) @Html.DisplayFor(model => model.StateName)  @Html.DisplayFor(model => model.Country) -  @Html.DisplayFor(model => model.ZipCode)
+                </div>
+            </div>
+
+            <div class="row pad-bot">
+                <div class="col-sm-4 right">
+                    @Html.DisplayNameFor(model => model.Education):
+                </div>
+                <div class="col-sm-8">
+                    @Html.DisplayFor(model => model.Education)
+                </div>
+            </div>
+
+            <div class="row pad-bot">
+                <div class="col-sm-4 right">
+                    @Html.DisplayNameFor(model => model.Profession):
+                </div>
+                <div class="col-sm-8">
+                    @Html.DisplayFor(model => model.Profession)
+                </div>
+            </div>
+
+            <div class="row pad-bot">
+                <div class="col-sm-4 right">
+                    @Html.DisplayNameFor(model => model.Interest):
+                </div>
+                <div class="col-sm-8">
+                    @Html.DisplayFor(model => model.Interest)
+                </div>
+            </div>
+
+            <div class="row pad-bot">
+                <div class="col-sm-4 right">
+                    @Html.DisplayNameFor(model => model.Expectation):
+                </div>
+                <div class="col-sm-8">
+                    @Html.DisplayFor(model => model.Expectation)
+                </div>
+            </div>
+
+            <div class="row pad-bot">
+                <div class="col-sm-4 right">
+                    @Html.DisplayNameFor(model => model.Interest):
+                </div>
+                <div class="col-sm-8">
+                    @Html.DisplayFor(model => model.Interest)
+                </div>
+            </div>
+
+        </div>
+        <div class="col-sm-4">
+            <img src="~/images/avatar.png" class="img-responsive avatar-img" alt="">
+        </div>
+    </div>
+
+
+    <div style="padding:20px;margin-top:20px ;border:1px solid lightgrey;">
+
+        <div style="font-size:large;padding-left:18px;font-size:23px;">
+            <span style="color:hotpink">Comments</span>
+            <span id="add-comment" class="btn btn-link">Add</span>
+        </div>
+
+        @{
+            foreach (var comment in comments)
+            {
+                <div class="row" style="padding:20px;">
+                    <div class="col-sm-12" style="font-size:20px;font-family:Consolas;">
+                        @comment.CommentText
+                    </div>
+                    <div class="col-sm-12" style="font-size:small;">
+                        @comment.CommentByUserName  @comment.CommentDate.ToShortDateString() - @comment.CommentDate.ToShortTimeString()
+                    </div>
+                </div>
+            }
+        }
+
+    </div>
+
+</div>
+

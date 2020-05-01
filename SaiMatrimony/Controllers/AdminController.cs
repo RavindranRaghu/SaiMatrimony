@@ -30,7 +30,7 @@ namespace SaiMatrimony.Controllers
 
         public IActionResult Userwithrole(string firstName, string lastName, string email, string all)
         {
-            StringFunctions common = new StringFunctions();
+            CommonFunction common = new CommonFunction();
             List<LoginUserProfile> userDetails = new List<LoginUserProfile>();
             List<UserBasic> users = db.UserBasic.ToList();
             List<UserRoleMap> roleMaps = db.UserRoleMap.ToList();
@@ -137,9 +137,15 @@ namespace SaiMatrimony.Controllers
         #region ReviewProfile
         public IActionResult Profile(string firstName, string lastName, string email, string all)
         {
-            StringFunctions common = new StringFunctions();
+            CommonFunction common = new CommonFunction();
             List<ProfileDetails> profileDetails = new List<ProfileDetails>();
-            List<ProfileDetails> profiles = db.ProfileDetails.ToList();            
+            List<ProfileDetails> profiles = db.ProfileDetails.ToList();
+
+            if (all == "n")
+            {
+                profiles = profiles.Where(x => !x.IsProfileApproved).ToList();
+
+            }
 
             profileDetails = (from user in profiles
                               select new ProfileDetails
@@ -169,6 +175,23 @@ namespace SaiMatrimony.Controllers
             }
 
             return Json(profileDetails);
+        }
+
+        public IActionResult ProcessProfile(int profileid, string approved)
+        {
+            ProfileDetails profile = new ProfileDetails();
+            var hasprofile = db.ProfileDetails.Where(x => x.ProfileId == profileid);
+            if (hasprofile.Any())
+            {
+                profile = hasprofile.FirstOrDefault();                
+                profile.IsProfileApproved = (approved == "y");
+                db.SaveChanges();
+                return Json("y");
+            }
+            else
+            {
+                return Json("n");
+            }
         }
 
         #endregion

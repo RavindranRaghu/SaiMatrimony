@@ -37,23 +37,28 @@
     .ml-auto {
         float: right !important;
     }
+
+    #goto-existing, #goto-new{
+        color:steelblue !important;
+    }
+
+    body{
+        background-color:whitesmoke;
+    }
+
 </style>
-<div id="msg" style="color:red"></div>
+
+<div id="msg" class="alert alert-success"></div>
+
+<div style="padding:20px;font-size:23px;text-align:center;">Welcome to Sai Matrimony</div>
+
 <div class="row" id="existing-user">
     <div class="col-sm-3">
-        @{
-            if (id == 1)
-            {
-                <div class="alert alert-warning" style="margin:20px;background-color:whitesmoke;">
-                    <div style="color:crimson;font-size:xx-large;padding-bottom:30px;">Access Denied <span style="font-size:x-large;" class="glyphicon glyphicon-ban-circle"></span></div>
-                    <div>Please contact the Support team <a href="mailto:webmaster@example.com">Support</a> for enquiries </div>                    
-                </div>
-            }
-            else
-            {
-
-            }
-        }
+        <div class="alert alert-warning" id="access-denied" style="margin:20px;background-color:whitesmoke;display:none;">
+            <div style="color:crimson;font-size:xx-large;padding-bottom:30px;text-align:center">Access Denied <span style="font-size:x-large;" class="glyphicon glyphicon-ban-circle"></span></div>
+            <div id="error-msg"></div>
+            <div>Please contact the Support team <a href="mailto:webmaster@example.com"></a> for enquiries </div>
+        </div>
     </div>
     <div class="col-sm-9">
         <div style="padding:20px;">
@@ -101,7 +106,7 @@
     <div class="col-sm-9">
         <div style="padding:20px;">
             <div class="page-title-div">
-                <span class="page-title-name">Welcome to our Program</span>
+                
             </div>
 
             <div class="row">
@@ -144,7 +149,7 @@
             </div>
             <div class="row">
                 <div class="col-sm-4 pad-bot">
-                    <span class="label-name">Password Re-Enter:</span>
+                    <span class="label-name">Confirm Password:</span>
                 </div>
                 <div class="col-sm-8 pad-bot">
                     <input type="password" id="pd-again" class="form-control" />
@@ -155,7 +160,7 @@
 
                 </div>
                 <div class="col-sm-8 pad-bot">
-                    <button type="button" style="margin-right:25px;" class="btn btn-success form-control" id="register">Login</button>
+                    <button type="button" style="margin-right:25px;max-width:230px;" class="btn btn-success form-control" id="register">Login</button>
                 </div>
             </div>
             <div class="row">
@@ -240,13 +245,15 @@
                         window.location.href = nav;
                     }
                     else {
-                        $("#msg").html(data.msg);
-                        $("#msg").show();
+                        $("#error-msg").html(data.msg);
+                        $("#error-msg").show();
+                        $("#access-denied").show();
                     }
                 },
                 error: function (data) {
-                        $("#msg").html(data.msg);
-                        $("#msg").show();
+                        $("#error-msg").html(data.msg);
+                    $("#error-msg").show
+                    $("#access-denied").show();
                 }
             })
         }
@@ -264,14 +271,16 @@
                 data : JSON.stringify(detail),
                 contentType : 'application/json; charset:utf-8',
                 dataType:'json',
-                success: function (data) {
-                    console.log(data);
+                success: function (data) {                    
                     if (data.success) {
                         $("#msg").html(data.msg);
                         $("#msg").show();
+                        $("#new-user input").attr('disabled', 'disabled');
+                        $("#new-user button").attr('disabled', 'disabled');
                     }
                 },
-                error: function (data) { alert("testingfailed"); }
+                error: function (data) {
+                }
             })
         }
         function validateEmail(email)

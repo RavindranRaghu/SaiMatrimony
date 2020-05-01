@@ -19,7 +19,8 @@ namespace SaiMatrimony.Models
 
         public virtual DbSet<ProfileDetails> ProfileDetails { get; set; }
         public virtual DbSet<ProfileApproved> ProfileApproved { get; set; }
-        public virtual DbSet<ProfileReview> ProfileReview { get; set; }        
+        public virtual DbSet<ProfileReview> ProfileReview { get; set; }
+        public virtual DbSet<ProfileComment> ProfileComment { get; set; }
         public virtual DbSet<UserBasic> UserBasic { get; set; }
 
         public virtual DbSet<UserRoleMap> UserRoleMap { get; set; }
