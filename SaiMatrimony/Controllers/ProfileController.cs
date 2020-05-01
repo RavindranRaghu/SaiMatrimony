@@ -118,5 +118,20 @@ namespace SaiMatrimony.Controllers
             return View(pdetail);
         }
 
+        public IActionResult Notification(string fromid)
+        {
+            
+            List<ProfileReview> iprofiles = db.ProfileReview.Where(x => x.ProposedFromUserId == fromid || x.ProposedToUserId ==fromid ).ToList();            
+
+            List<ProfileComment> comments = db.ProfileComment.ToList();
+
+            List<ProfileComment> icomments = (from com in comments
+                                              join pro in iprofiles on com.ProfileReviewId equals pro.ProfileReviewId
+                                              select com
+                                              ).OrderByDescending(x => x.CommentDate).Take(10).ToList();
+
+            return Json(icomments);
+        }
+
     }
 }

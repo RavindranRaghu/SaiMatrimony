@@ -7,7 +7,8 @@
       $('.preloader').fadeOut(1000); // set duration in brackets    
     });
     
-    $("#search-html").html(loadProfile());    
+    $("#search-html").html(loadProfile());  
+    getNotifications();
 
     $(document).on('click', ".search-main",function () {
 
@@ -127,8 +128,9 @@
         var location = $(".location:first").val();
         var gen = $(".gender:first").val();
         var category = $("#category").val();
+        var fromId = $("#proposed-from-id").val();
 
-        var url = "/home/getprofiles?edu=" + edu + "&pro=" + pro + "&location=" + location + "&gen=" + gen + "&category=" + category;        
+        var url = "/home/getprofiles?edu=" + edu + "&pro=" + pro + "&location=" + location + "&gen=" + gen + "&category=" + category + "&fromid=" + fromId ;        
         $.ajax({
             url: url,
             type: 'GET',
@@ -250,5 +252,53 @@
         });
 
     })
+
+    function getNotifications() {
+
+        var fromId = $("#proposed-from-id").val();
+        var url = "/profile/notification?fromid=" + fromId ;
+        $.ajax({
+            url: url,
+            type: 'POST',
+            contentType: "application/json; charset=utf-8",
+            async: false,
+            cache: false,
+            success: function (result) {
+                console.log(result);
+                var ahtml = '';
+                if (result &&  result.length > 0) {                    
+                    result.forEach(function (item) {
+                        ahtml += '<div class="row" style="padding:10px;">'
+                        ahtml += '<div class="col-sm-12">'
+                        ahtml += item.commentText + " - ";
+                        ahtml += '<span style="color:steelblue;"> ' + item.commentByUserName + " " + formattedDateTime(item.commentDate) +'</span>'
+                        ahtml += '</div >'
+                        ahtml += '</div >'
+                    })                    
+                }
+                else {
+                    ahtml = 'No notifications found'
+                }
+                $("#blog-notification-iproposed").html(ahtml);
+            },
+            error: function (error) {
+                $("#blog-notification-iproposed").html("Error loading notifictions");
+            }
+        });
+    }
+
+    function formattedDateTime(cdate) {
+        var date = new Date(cdate);
+        var day = date.getDate();       // yields date
+        var month = date.getMonth() + 1;    // yields month (add one as '.getMonth()' is zero indexed)
+        var year = date.getFullYear();  // yields year
+        var hour = date.getHours();     // yields hours 
+        var minute = date.getMinutes(); // yields minutes
+        var second = date.getSeconds(); // yields seconds
+
+        // After this construct a string with the above results as below
+        var fDate = day + "/" + month + "/" + year + " " + hour + ':' + minute + ':' + second;
+        return fDate;
+    }
 
 })(jQuery);
