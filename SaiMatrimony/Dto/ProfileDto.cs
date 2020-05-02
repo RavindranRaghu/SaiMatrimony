@@ -9,12 +9,22 @@ namespace SaiMatrimony.Dto
 {
     public class ProfileDto
     {
-        public List<ProfileDetails> GetProfilesEndPoint(SaiMatrimonyDb db, string edu, string pro, string gen, string location, string category, string fromid)
+        public List<ProfileDetails> GetProfilesEndPoint(SaiMatrimonyDb db, string edu, string pro, string mname, string location, string category, string fromid)
         {
             List<ProfileDetails> allProfiles = (from p in db.ProfileDetails
                                                 where p.IsProfileApproved
                                                 select p
                                                 ).ToList();
+
+            var hasFromApprovedProfile = allProfiles.Where(x => x.ProfileUserId == fromid);
+            if (!hasFromApprovedProfile.Any())
+            {
+                return new List<ProfileDetails>();
+            }
+
+            ProfileDetails fromProfile = hasFromApprovedProfile.FirstOrDefault();
+
+            allProfiles = allProfiles.Where(x => x.Gender.ToLower() != fromProfile.Gender.ToLower()).ToList();
 
             List<ProfileReview> matches = db.ProfileReview.ToList();
 
@@ -26,11 +36,11 @@ namespace SaiMatrimony.Dto
                                             where m.ProposedToUserId == fromid
                                             select m.ProposedFromUserId ).ToList();
 
-            return GetProfilesLogic(allProfiles, imatches, omatches, edu, pro, gen, location, category);
+            return GetProfilesLogic(allProfiles, imatches, omatches, edu, pro, mname, location, category);
         }
 
         // Logic should be Unit Tested
-        public List<ProfileDetails> GetProfilesLogic(List<ProfileDetails> profiles, List<string> imatches, List<string> omatches, string edu, string pro, string gen, string location, string category)
+        public List<ProfileDetails> GetProfilesLogic(List<ProfileDetails> profiles, List<string> imatches, List<string> omatches, string edu, string pro, string mname, string location, string category)
         {            
             CommonFunction stringFunctions = new CommonFunction();
             if (!stringFunctions.CheckIsNullOrEmpty(edu))
@@ -41,10 +51,9 @@ namespace SaiMatrimony.Dto
             {
                 profiles = profiles.Where(x => x.Profession.ToLower().Contains(pro.ToLower())).ToList();
             }
-            if (gen != "Select Gender")
+            if (!stringFunctions.CheckIsNullOrEmpty(mname))
             {
-                gen = (gen.ToLower() == "male") ? "m" : "f";
-                profiles = profiles.Where(x => x.Gender.ToLower().Contains(gen.ToLower())).ToList();
+                profiles = profiles.Where(x => (x.FirstName.ToLower() + x.MiddleName.ToLower() + x.LastName.ToLower()).Contains(mname.ToLower())).ToList();
             }
             if (!stringFunctions.CheckIsNullOrEmpty(location))
             {

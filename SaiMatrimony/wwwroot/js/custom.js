@@ -34,19 +34,19 @@
         }
     });
 
-    $(document).on('keyup', ".education", function () {
+    $(document).on('keyup', "#matchname-src", function () {
         loadProfile();
     });
 
-    $(document).on('keyup', ".location", function () {
+    $(document).on('keyup', "#location-src", function () {
         loadProfile();
     });
 
-    $(document).on('keyup', ".profession", function () {
+    $(document).on('keyup', "#profession-src", function () {
         loadProfile();
     });
 
-    $(document).on('change', ".gender", function () {
+    $(document).on('keyup', "#education-src", function () {
         loadProfile();
     });
 
@@ -123,14 +123,14 @@
 
 
     function loadProfile() {
-        var edu = $(".education:first").val();
-        var pro = $(".profession:first").val();
-        var location = $(".location:first").val();
-        var gen = $(".gender:first").val();
+        var edu = $("#education-src").val();
+        var pro = $("#profession-src").val();
+        var location = $("#location-src").val();
+        var mname = $("#matchname-src").val();
         var category = $("#category").val();
         var fromId = $("#proposed-from-id").val();
 
-        var url = "/home/getprofiles?edu=" + edu + "&pro=" + pro + "&location=" + location + "&gen=" + gen + "&category=" + category + "&fromid=" + fromId ;        
+        var url = "/home/getprofiles?edu=" + edu + "&pro=" + pro + "&location=" + location + "&mname=" + mname + "&category=" + category + "&fromid=" + fromId ;        
         $.ajax({
             url: url,
             type: 'GET',
@@ -269,8 +269,10 @@
                 if (result &&  result.length > 0) {                    
                     result.forEach(function (item) {
                         ahtml += '<div class="row" style="padding:10px;">'
-                        ahtml += '<div class="col-sm-12">'
+                        ahtml += '<div class="col-sm-12"  >'
+                        ahtml += '<a href="/profile/matchdetail?reviewid=' + item.profileReviewId + '&fromid=' + fromId + '" style="font-family:consolas;font-size:medium;">'
                         ahtml += item.commentText + " - ";
+                        ahtml += '</a>'
                         ahtml += '<span style="color:steelblue;"> ' + item.commentByUserName + " " + formattedDateTime(item.commentDate) +'</span>'
                         ahtml += '</div >'
                         ahtml += '</div >'

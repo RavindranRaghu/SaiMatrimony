@@ -112,9 +112,9 @@ namespace SaiMatrimony.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-        public IActionResult GetProfiles (string edu, string pro, string gen, string location, string category, string fromid)
+        public IActionResult GetProfiles (string edu, string pro, string mname, string location, string category, string fromid)
         {
-            return Json(new ProfileDto().GetProfilesEndPoint(db, edu, pro, gen, location, category, fromid));
+            return Json(new ProfileDto().GetProfilesEndPoint(db, edu, pro, mname, location, category, fromid));
         }
 
         //No Authorization Set intentionally
@@ -189,6 +189,10 @@ namespace SaiMatrimony.Controllers
         public IActionResult SignOut()
         {
             AuthSession.SetUserId(HttpContext, "invalid");
+            foreach (var cookie in HttpContext.Request.Cookies)
+            {
+                Response.Cookies.Delete(cookie.Key);
+            }
             return View();
         }
 

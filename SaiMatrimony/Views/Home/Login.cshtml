@@ -242,7 +242,7 @@
                 success: function (data) {
                     console.log(data);
                     if (data.success == "y") {
-                        window.location.href = nav;
+                        window.location.href = '/home/index';
                     }
                     else {
                         $("#error-msg").html(data.msg);

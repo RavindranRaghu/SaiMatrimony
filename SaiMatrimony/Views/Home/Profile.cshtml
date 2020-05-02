@@ -14,7 +14,7 @@
         padding-bottom: 20px;
     }
 </style>
-<input type="hidden" class="form-control" id="profile-id" value="0" />
+<input type="hidden" class="form-control" id="profile-id" value="@Model.ProfileId" />
 
 <div style="max-width:800px;padding:40px 40px 40px 60px;" id="form-profile">
     <div class="row pad-bot">
@@ -126,6 +126,9 @@
 
     $(function () {
 
+        
+        $("#profile-gender").val("@Model.Gender");
+
         $("#save-profile").click(function () {
             var profileDetails = getProfile();
             $.ajax({
@@ -160,7 +163,7 @@
         function getProfile() {
             var profile = {
                 ProfileId: $("#profile-id").val(),
-                ProfileUserId: "0",
+                ProfileUserId: "0" ,
                 FirstName: $("#profile-first-name").val(),
                 MiddleName: $("#profile-middle-name").val(),
                 LastName: $("#profile-last-name").val(),

@@ -155,3 +155,5 @@ SELECT * FROM UserBasic
  SELECT * FROM DBO.ProfileComment
 
  SELECT * FROM DBO.ProfileMatch
+
+ DELETE FROM DBO.ProfileMatch WHERE ProfileId = 8;

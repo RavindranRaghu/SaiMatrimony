@@ -23,6 +23,15 @@
         background-color:crimson;
         color:white;
     }
+
+    .section-title h2{
+        color:hotpink;
+    }
+
+    #contact {
+        background-color:none;
+    }
+
 </style>
 
 <!-- PRE LOADER -->
@@ -59,7 +68,7 @@
                         <div class="media blog-thumb">
                             <h4 style="padding:10px;">Notification <i class="fa fa-bell"></i></h4>
                             <div class="media-body blog-info">                                
-                                <h3><a href="blog-detail.html">Profile : @profileName </a></h3>
+                                <h3><a href="~/home/profile?id=@Model.ProfileUserId">Profile : @profileName </a></h3>
                                 @{ 
                                     if (error)
                                     {
@@ -67,31 +76,12 @@
                                     }
                                 }
                                 <p>Lorem ipsum dolor sit consectetur adipiscing morbi venenatis.</p>
-                                <a href="blog-detail.html" class="btn section-btn">See All Notifications</a>
+                                <a href="#blog" class="btn section-btn">See All Notifications</a>
                             </div>
                         </div>
-
-                        <div class="row" style="padding:5px;">
-                            <div class="col-md-6">
-                                <input class="form-control" type="text" placeholder="Education" />
-                            </div>
-                            <div class="col-md-6">
-                                <div> <input class="form-control" type="text" placeholder="Profession" /> </div>
-                            </div>
+                        <div style="padding:10px;">
+                            <a href="#about" class="btn section-btn" style="width:150px;padding:8px;background-color:crimson;color:white;">Find a Match</a>                            
                         </div>
-                        <div class="row" style="padding:5px;">
-                            <div class="col-md-6">
-                                <select class="form-control" id="search-gender" name="search-gender">
-                                    <option>Gender</option>
-                                    <option>Male</option>
-                                    <option>Female</option>
-                                </select>
-                            </div>
-                            <div class="col-md-6">
-                                <div> <input class="form-control" type="text" placeholder="Location" /> </div>
-                            </div>
-                        </div>
-                        <div style="padding:10px;"><input type="submit" style="width:150px;padding:8px;" class="form-control" name="search-submit" value="Search Profiles"></div>
                     </div>
                 </div>
             </div>
@@ -123,22 +113,18 @@
             </div>
         </div>
         <div class="row" style="padding:10px 15px 10px 15px;">
-            <input type="hidden" id="category" value="all" /> 
+            <input type="hidden" id="category" value="all" />
             <div class="col-md-3 col-sm-3">
-                <input class="form-control education" type="text" placeholder="Education" />
+                <input class="form-control" id="matchname-src" type="text" placeholder="Name" />
             </div>
             <div class="col-md-3 col-sm-3">
-                <input class="form-control profession" type="text" placeholder="Profession" />
+                <input class="form-control" id="education-src" type="text" placeholder="Education" />
             </div>
             <div class="col-md-3 col-sm-3">
-                <select class="form-control gender" id="search-gender" name="search-gender">
-                    <option>Select Gender</option>
-                    <option>Male</option>
-                    <option>Female</option>
-                </select>
+                <input class="form-control" id="profession-src" type="text" placeholder="Profession" />
             </div>
             <div class="col-md-3 col-sm-3">
-                <input class="form-control location" type="text" placeholder="Location" />
+                <input class="form-control" id="location-src" type="text" placeholder="Location" />
             </div>
         </div>
         <div class="row">
@@ -164,7 +150,7 @@
 
              <div class="col-md-12 col-sm-12">
                  <div class="section-title">
-                     <h2>Notifications</h2>
+                     <h2>Notifications <i class="fa fa-bell"></i></h2>
                  </div>
              </div>
 
@@ -248,14 +234,15 @@
           </div>
      </div>
 </section>-->
-<!-- CONTACT -->
-<section id="contact" data-stellar-background-ratio="0.5">
+
+<!-- FOOTER -->
+<footer  id="contact"   data-stellar-background-ratio="0.5">
     <div class="container">
         <div class="row">
 
             <div class="col-md-12 col-sm-12">
-                <div class="section-title">
-                    <h2>Contact us</h2>
+                <div class="section-title" style="padding-left:20px;">
+                    <h2 >Contact us</h2>
                 </div>
             </div>
 
@@ -284,81 +271,14 @@
 
             <div class="col-md-4 col-sm-4">
                 <div class="google-map">
-                    <img src="~/images/lotus-feet.jpg" style="height:200px;" />
+                    <img src="~/images/lotus-feet.jpg" style="height:230px;" />
                     <!-- How to change your own map point
-                            1. Go to Google Maps
-                            2. Click on your location point
-                            3. Click "Share" and choose "Embed map" tab
-                            4. Copy only URL and paste it within the src="" field below
-                    -->
+                        1. Go to Google Maps
+                        2. Click on your location point
+                        3. Click "Share" and choose "Embed map" tab
+                        4. Copy only URL and paste it within the src="" field below
+                -->
                     @*<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3647.3030413476204!2d100.5641230193719!3d13.757206847615207!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0xf51ce6427b7918fc!2sG+Tower!5e0!3m2!1sen!2sth!4v1510722015945" allowfullscreen></iframe>*@
-                </div>
-            </div>
-
-        </div>
-    </div>
-</section>
-
-
-<!-- FOOTER -->
-<footer data-stellar-background-ratio="0.5">
-    <div class="container">
-        <div class="row">
-
-            <div class="col-md-5 col-sm-12">
-                <div class="footer-thumb footer-info">
-                    <h2>Hydro Company</h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                </div>
-            </div>
-
-            <div class="col-md-2 col-sm-4">
-                <div class="footer-thumb">
-                    <h2>Company</h2>
-                    <ul class="footer-link">
-                        <li><a href="#">About Us</a></li>
-                        <li><a href="#">Join our team</a></li>
-                        <li><a href="#">Read Blog</a></li>
-                        <li><a href="#">Press</a></li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="col-md-2 col-sm-4">
-                <div class="footer-thumb">
-                    <h2>Services</h2>
-                    <ul class="footer-link">
-                        <li><a href="#">Pricing</a></li>
-                        <li><a href="#">Documentation</a></li>
-                        <li><a href="#">Support</a></li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="col-md-3 col-sm-4">
-                <div class="footer-thumb">
-                    <h2>Find us</h2>
-                    <p>123 Grand Rama IX, <br> Krung Thep Maha Nakhon 10400</p>
-                </div>
-            </div>
-
-            <div class="col-md-12 col-sm-12">
-                <div class="footer-bottom">
-                    <div class="col-md-6 col-sm-5">
-                        <div class="copyright-text">
-                            <p>Copyright &copy; 2017 Your Company</p>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-sm-7">
-                        <div class="phone-contact">
-                            <p>Call us <span>(+66) 010-020-0340</span></p>
-                        </div>
-                        <ul class="social-icon">
-                            <li><a href="https://www.facebook.com/templatemo" class="fa fa-facebook-square" attr="facebook icon"></a></li>
-                            <li><a href="#" class="fa fa-twitter"></a></li>
-                            <li><a href="#" class="fa fa-instagram"></a></li>
-                        </ul>
-                    </div>
                 </div>
             </div>
 
