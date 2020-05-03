@@ -17,6 +17,8 @@ namespace SaiMatrimony.Dto
             ProfileComment comment = new ProfileComment();
             CommonFunction common = new CommonFunction();
             string commentText = string.Empty;
+            string msg = "";
+            bool result = false;
 
             try
             {                
@@ -60,31 +62,37 @@ namespace SaiMatrimony.Dto
                     profileReview.HasAcceptedDiscussion = true;
                     profileReview.DateAcceptedDiscussion = DateTime.UtcNow;
                     db.SaveChanges();
-                    commentText = common.GetName(toIdUser) + " accepted to discuss " + common.GetName(fromUser);
-                    return new KeyValuePair<bool, string>(true, "Match has accepted to dicuss with you");
+                    commentText = common.GetName(fromUser) + " accepted to discuss " + common.GetName(toIdUser);
+                    result = true;
+                    msg = "You have accepted to dicuss with the match";
+                    //return new KeyValuePair<bool, string>(true, "You have accepted to dicuss with the match");
                 }
                 else if (actionType == "acceptproposal" & profileReview.HasMadeProposal)
                 {
                     profileReview.HasAcceptedProposal = true;
                     profileReview.DateAcceptedProposal = DateTime.UtcNow;
                     db.SaveChanges();
-                    commentText = common.GetName(toIdUser) + " accepted proposal " + common.GetName(fromUser);
-                    return new KeyValuePair<bool, string>(true, "Match has been accepted. You will no longer have access to other profiles");
+                    commentText = common.GetName(fromUser) + " accepted proposal " + common.GetName(toIdUser);
+                    result = true;
+                    msg = "You have accepted the proposal with the match";
+                    //return new KeyValuePair<bool, string>(true, "Match has been accepted. You will no longer have access to other profiles");
                 }
                 else if (actionType == "rejectproposal" & profileReview.HasMadeProposal)
                 {
                     profileReview.HasRejectedProposal = true;
                     profileReview.DateRejectedProposal = DateTime.UtcNow;
                     db.SaveChanges();
-                    commentText = common.GetName(toIdUser) + " rejected proposal " + common.GetName(fromUser);
-                    return new KeyValuePair<bool, string>(true, "Match has not been accepted. You will no longer have access to this profile");
+                    commentText = common.GetName(fromUser) + " rejected proposal " + common.GetName(toIdUser);
+                    result = true;
+                    msg = "You have rejected the proposal with the match";
+                    //return new KeyValuePair<bool, string>(true, "Match has not been accepted. You will no longer have access to this profile");
                 }
 
                 comment = new ProfileComment();
                 comment.ProfileReviewId = reviewId;
                 comment.CommentText = commentText;
-                comment.CommentByUserName = common.GetName(toIdUser);
-                comment.CommentByUserId = toIdUser.ProfileUserId;
+                comment.CommentByUserName = common.GetName(fromUser);
+                comment.CommentByUserId = fromUser.ProfileUserId;
                 comment.CommentDate = DateTime.UtcNow;
                 db.ProfileComment.Add(comment);
                 db.SaveChanges();
@@ -93,6 +101,11 @@ namespace SaiMatrimony.Dto
             {
                 string ex = e.Message;
                 return new KeyValuePair<bool, string>(false, "System could not match the profile, Contact Support for details");
+            }
+
+            if (result)
+            {
+                return new KeyValuePair<bool, string>(result, msg);
             }
 
             return new KeyValuePair<bool, string>(false, "System could not match the profile, Contact Support for details");

@@ -2,28 +2,33 @@
 
 @{
     ViewData["Title"] = "MatchDetail";
+    Layout = "~/Views/Shared/_layoutlogin.cshtml";
     ProfileReview profileReview = (ProfileReview)ViewBag.profile;
     bool iProposed = (bool)ViewBag.iProposed;
     List<ProfileComment> comments = (List<ProfileComment>)ViewBag.comments;
+    string fromid = ViewBag.fromid;
+    string toid = ViewBag.toid;
 }
 
 <style>
-   .pad-bot{
-       padding:10px;
-   }
+    .pad-bot {
+        padding: 10px;
+    }
 
-   .right {
-       text-align :right;       
-   }
+    .right {
+        text-align: right;
+    }
 
-   .profile {
-       font-size:medium;
-   }
-
+    .profile {
+        font-size: medium;
+    }
 </style>
 
 <div style="padding:20px;">
     <h4>Profile Details: </h4>
+    <input type="hidden" id="proposed-from-id" value="@fromid" />
+    <input type="hidden" id="proposed-to-id" value="@toid" />
+    <input type="hidden" id="proposed-action" value="@toid" />
     <div class="row">
         <div class="col-sm-4"></div>
         <div class="col-sm-8">
@@ -32,19 +37,19 @@
                 {
                     <button class="btn btn-success match-profile" data-actiontype="acceptdiscussion">Accept Discussion</button>
                 }
-                else if (!iProposed && profileReview.HasAcceptedDiscussion)
-                {
-                    <span style="color:green;">You Accepted to Discussion</span>
-                }
-
 
                 if (!iProposed && !profileReview.HasAcceptedProposal)
                 {
                     <button class="btn btn-success match-profile" data-actiontype="acceptproposal">Accept Proposal</button>
+                    <button class="btn btn-success match-profile" data-actiontype="rejectproposal">Reject Proposal</button>
                 }
                 else if (!iProposed && profileReview.HasAcceptedProposal)
                 {
-                    <span style="color:green;">You Accepted to Proposal</span>
+                    <span style="color:green;">You Accepted to the Proposal</span>
+                }
+                else if (!iProposed && profileReview.HasRejectedProposal)
+                {
+                    <span style="color:green;">You Rejectd to the Proposal</span>
                 }
 
 
@@ -172,7 +177,7 @@
     <div style="padding:20px;margin-top:20px ;border:1px solid lightgrey;">
 
         <div style="font-size:large;padding-left:18px;font-size:23px;">
-            <span style="color:hotpink">Comments</span>
+            <span style="color:hotpink">Notifications</span>
             <span id="add-comment" class="btn btn-link">Add</span>
         </div>
 
@@ -194,3 +199,145 @@
 
 </div>
 
+<section class="modal fade" id="match-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content modal-popup">
+
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                Propose a Match
+            </div>
+
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div id="proposed-text" style="color:white"></div>
+                        </div>
+                    </div>
+                    <div class="row" style="padding-top:20px;">
+                        <div class="col-sm-4">
+
+                        </div>
+                        <div class="col-sm-4">
+                            <button id="match-profile" type="submit">Propose</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<section class="modal fade" id="comment-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content modal-popup">
+
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                Send a Notification
+            </div>
+
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="row" style="padding-top:20px;">
+                        <div class="col-sm-12">
+                            <textarea rows="4" class="form-control" id="what-comment"></textarea>
+                        </div>                        
+                    </div>
+                    <div class="row" style="padding-top:20px;">
+                        <div class="col-sm-4">
+
+                        </div>
+                        <div class="col-sm-4">
+                            <button id="save-comment" type="submit">Send a Message</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<script>
+
+    $(function () {
+
+
+        $(document).on('click', ".match-profile", function () {
+
+            $("#proposed-action").val($(this).data('actiontype'));
+            var whatAction = ''
+            if ($(this).data('actiontype') == 'acceptdiscussion') {
+                whatAction = 'You are accepting to have a discussion with ' + '@Model.FirstName';
+            }
+            else if ($(this).data('actiontype') == 'acceptproposal') {
+                whatAction = 'You are accepting proposal with ' + '@Model.FirstName';
+            }
+
+            $("#proposed-text").html(whatAction);
+            $("#match-profile").removeAttr('disabled');
+            $("#match-modal").modal();
+        });
+
+        $(document).on('click', "#match-profile", function () {
+            var toId = $("#proposed-to-id").val();
+            var fromId = $("#proposed-from-id").val();
+            var maction = $("#proposed-action").val();
+            var reviewid = '@profileReview.ProfileReviewId';
+
+            var url = "/profile/setmatch?toid=" + toId + "&fromid=" + fromId + "&maction=" + maction +"&reviewid="+reviewid;
+            $.ajax({
+                url: url,
+                type: 'POST',
+                contentType: "application/json; charset=utf-8",
+                async: false,
+                success: function (result) {
+                    if (result.key == "y") {
+                        $("#proposed-text").html(result.value + ' <span class="glyphicon glyphicon-ok-sign" style="color:green;"></span>');
+                        $("#match-profile").attr('disabled', 'disabled')
+                    }
+                },
+                error: function (error) {
+                    $("#proposed-text").html("Error");
+                }
+            });
+        })
+
+        $(document).on('click', "#add-comment", function () {
+            $("#what-comment").val('');
+            $("#comment-modal").modal();
+        });
+
+        $(document).on('click', "#save-comment", function () {   
+            var toId = $("#proposed-to-id").val();
+            var fromId = $("#proposed-from-id").val();
+            var comment = $("#what-comment").val();
+            var reviewid = '@profileReview.ProfileReviewId';
+
+            var url = "/profile/addcomment?toid=" + toId + "&fromid=" + fromId + "&comment=" + comment +"&reviewid="+reviewid;
+            $.ajax({
+                url: url,
+                type: 'POST',
+                contentType: "application/json; charset=utf-8",
+                async: false,
+                success: function (result) {
+                    if (result== "y") {
+                        $("#comment-modal").modal('hide');
+                    }
+                },
+                error: function (error) {
+                    $("#proposed-text").html("Error");
+                }
+            });
+        })
+
+    })
+
+</script>

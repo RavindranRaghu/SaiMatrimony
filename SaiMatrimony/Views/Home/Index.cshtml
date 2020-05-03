@@ -65,17 +65,17 @@
                     <div id="search-pane" style="background:linear-gradient(to right, #434343, #000000);padding:15px;">
                         <!--<iframe src="https://www.youtube.com/embed/AqcjdkPMPJA" frameborder="0" allowfullscreen></iframe>-->
 
-                        <div class="media blog-thumb">
+                        <div class="media blog-thumb" style="height:400px;">
                             <h4 style="padding:10px;">Notification <i class="fa fa-bell"></i></h4>
-                            <div class="media-body blog-info">                                
-                                <h3><a href="~/home/profile?id=@Model.ProfileUserId">Profile : @profileName </a></h3>
+                            <div class="media-body blog-info" style="padding:25px 25px;">                                
+                                <h3><a href="~/home/profile?id=@Model.ProfileUserId" style="color:crimson;">Profile : @profileName </a></h3>
                                 @{ 
                                     if (error)
                                     {
                                         <div>Error loading profile. contact support</div>
                                     }
                                 }
-                                <p>Lorem ipsum dolor sit consectetur adipiscing morbi venenatis.</p>
+                                <div id="blog-notification-top"></div>
                                 <a href="#blog" class="btn section-btn">See All Notifications</a>
                             </div>
                         </div>
@@ -149,8 +149,8 @@
          <div class="row">
 
              <div class="col-md-12 col-sm-12">
-                 <div class="section-title">
-                     <h2>Notifications <i class="fa fa-bell"></i></h2>
+                 <div class="section-title" style="margin-bottom:20px;">
+                     <h2>Notifications <i class="fa fa-bell" style="font-size:20px;"></i></h2>
                  </div>
              </div>
 

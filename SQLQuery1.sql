@@ -157,3 +157,7 @@ SELECT * FROM UserBasic
  SELECT * FROM DBO.ProfileMatch
 
  DELETE FROM DBO.ProfileMatch WHERE ProfileId = 8;
+
+ UPDATE DBO.ProfileReview SET HASaCCEPTEDDISCUSSION = 0
+
+ UPDATE DBO.ProfileReview SET HasAcceptedProposal = 0

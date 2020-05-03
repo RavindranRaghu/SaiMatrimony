@@ -70,10 +70,27 @@ namespace SaiMatrimony.Controllers
             }
         }
 
-        public IActionResult SetMatch(string fromid, string toid, string maction)
+        public IActionResult SetMatch(string fromid, string toid, string maction, int reviewid)
         {
-            KeyValuePair<bool, string> sMatch = new ProfileWorkFlow().SetMatch(db, fromid, toid, maction, 0);
+            KeyValuePair<bool, string> sMatch = new ProfileWorkFlow().SetMatch(db, fromid, toid, maction, reviewid);
             return Json(new KeyValuePair<string, string>(sMatch.Key ?"y": "n", sMatch.Value));
+        }
+
+        public IActionResult addcomment(string fromid, string toid, string comment, int reviewid)
+        {
+            
+            ProfileDetails fromUser = db.ProfileDetails.Where(x => x.ProfileUserId == fromid).FirstOrDefault();
+            ProfileDetails toUser = db.ProfileDetails.Where(x => x.ProfileUserId == toid).FirstOrDefault();
+            ProfileComment pcomment = new ProfileComment();
+            CommonFunction common = new CommonFunction();
+            pcomment.ProfileReviewId = reviewid;
+            pcomment.CommentText = common.GetName(fromUser) +" says to " + common.GetName(toUser) + " - " +  comment;
+            pcomment.CommentByUserName = common.GetName(fromUser);
+            pcomment.CommentByUserId = fromUser.ProfileUserId;
+            pcomment.CommentDate = DateTime.UtcNow;
+            db.ProfileComment.Add(pcomment);
+            db.SaveChanges();
+            return Json("y");
         }
 
         public IActionResult MatchExist(string fromid, string toid, string maction)
@@ -109,12 +126,14 @@ namespace SaiMatrimony.Controllers
                 profileId = profile.ProposedFromUserId == fromid ? profile.ProposedToUserId : profile.ProposedFromUserId;
                 iProposed = profile.ProposedFromUserId == fromid ? true : false;
                 pdetail = db.ProfileDetails.Where(x => x.ProfileUserId == profileId).FirstOrDefault();
-                comments = db.ProfileComment.Where(x => x.ProfileReviewId == reviewid).ToList();
+                comments = db.ProfileComment.Where(x => x.ProfileReviewId == reviewid).OrderByDescending(x=>x.CommentDate).ToList();
             }
 
             ViewBag.profile = profile;
             ViewBag.iProposed = iProposed;
             ViewBag.comments = comments;
+            ViewBag.fromid = fromid;
+            ViewBag.toid = profileId;
             return View(pdetail);
         }
 

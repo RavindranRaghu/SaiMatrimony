@@ -263,30 +263,44 @@
             contentType: "application/json; charset=utf-8",
             async: false,
             cache: false,
-            success: function (result) {
-                console.log(result);
+            success: function (result) {                
                 var ahtml = '';
+                var nhtml = '';
+                var counter = 0;
                 if (result &&  result.length > 0) {                    
                     result.forEach(function (item) {
-                        ahtml += '<div class="row" style="padding:10px;">'
-                        ahtml += '<div class="col-sm-12"  >'
-                        ahtml += '<a href="/profile/matchdetail?reviewid=' + item.profileReviewId + '&fromid=' + fromId + '" style="font-family:consolas;font-size:medium;">'
-                        ahtml += item.commentText + " - ";
-                        ahtml += '</a>'
-                        ahtml += '<span style="color:steelblue;"> ' + item.commentByUserName + " " + formattedDateTime(item.commentDate) +'</span>'
-                        ahtml += '</div >'
-                        ahtml += '</div >'
+                        ahtml += notificationBody(item, fromId);
+                        if (counter < 2) {
+                            nhtml += notificationBody(item, fromId);
+                        }
+                        counter++;
                     })                    
                 }
                 else {
                     ahtml = 'No notifications found'
+                    nhtml = 'No notifications found'
                 }
                 $("#blog-notification-iproposed").html(ahtml);
+                $("#blog-notification-top").html(nhtml);
             },
             error: function (error) {
-                $("#blog-notification-iproposed").html("Error loading notifictions");
+                $("#blog-notification-iproposed").html("Error loading notifications");
+                $("#blog-notification-top").html("Error loading notifications");
             }
         });
+    }
+
+    function notificationBody(item, fromId) {
+        var ahtml =''
+        ahtml += '<div class="row" style="padding:10px;">'
+        ahtml += '<div class="col-sm-12"  >'
+        ahtml += '<a href="/profile/matchdetail?reviewid=' + item.profileReviewId + '&fromid=' + fromId + '" style="font-family:consolas;font-size:medium;">'
+        ahtml += item.commentText + " - ";
+        ahtml += '</a>'
+        ahtml += '<span style="color:steelblue;"> ' + formattedDateTime(item.commentDate) + '</span>'
+        ahtml += '</div >'
+        ahtml += '</div >'
+        return ahtml;
     }
 
     function formattedDateTime(cdate) {
